@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Care & Donation — The Little Garden Nursery</title>
+  <style>
+    :root {
+      --forest: #244638;
+      --sage: #9baa88;
+      --cream: #f7f5ee;
+      --clay: #b97859;
+      --ink: #29372f;
+      --card-bg: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      padding: 20px 16px 40px;
+      line-height: 1.6;
+    }
+    .container { max-width: 480px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h2 { font-family: Georgia, serif; color: var(--forest); font-size: 20px; }
+    .header p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--clay); font-weight: bold; }
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+      border: 1px solid #e7e4d8;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--clay);
+      margin-bottom: 8px;
+    }
+    h1 { font-family: Georgia, serif; font-size: 30px; line-height: 1.2; color: var(--forest); margin-bottom: 12px; }
+    .desc { font-size: 15px; color: #536258; margin-bottom: 20px; }
+    .impact-box {
+      background: #eef3ec;
+      border: 1px solid #c9d8c3;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .impact-box strong { display: block; font-size: 26px; color: var(--forest); margin-bottom: 4px; }
+    .impact-box span { font-size: 13px; color: #435b4b; line-height: 1.4; display: block; }
+    .specs { margin-bottom: 24px; }
+    .spec-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0ede3; font-size: 14px; }
+    .spec-item span:first-child { color: #738076; font-weight: 500; }
+    .spec-item span:last-child { color: var(--ink); font-weight: 600; text-align: right; max-width: 60%; }
+    .btn-donate {
+      display: block;
+      width: 100%;
+      background: var(--forest);
+      color: #ffffff;
+      text-align: center;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(36, 70, 56, 0.25);
+    }
+    .btn-donate:active { transform: scale(0.98); }
+    .instructions {
+      margin-top: 16px;
+      font-size: 12px;
+      text-align: center;
+      color: #717d74;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <p>The Little Garden Nursery</p>
+      <h2>San Jose, California</h2>
+    </div>
+
+    <div class="card" id="plant-card">
+      <div class="badge" id="p-category">Plant Category</div>
+      <h1 id="p-name">Loading Plant...</h1>
+      <p class="desc" id="p-desc"></p>
+
+      <div class="impact-box">
+        <strong id="p-donation">$0 Donation</strong>
+        <span id="p-impact">100% helps provide nutritious meals via Hunger at Home</span>
+      </div>
+
+      <div class="specs">
+        <div class="spec-item"><span>Sun Needs</span><span id="p-sun">—</span></div>
+        <div class="spec-item"><span>Watering</span><span id="p-water">—</span></div>
+        <div class="spec-item"><span>Soil Type</span><span id="p-soil">—</span></div>
+        <div class="spec-item"><span>Local Pickup</span><span id="p-pickup">San Jose, CA</span></div>
+      </div>
+
+      <a id="donate-link" href="https://hungerathome.org/donate/" target="_blank" class="btn-donate">
+        Donate & Pick Up
+      </a>
+
+      <p class="instructions">
+        Tap to donate on Hunger at Home's official portal. Simply show your confirmation email at pickup!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const plantId = params.get('id') || 'black-mission-fig';
+
+    fetch('plants.json')
+      .then(res => res.json())
+      .then(plants => {
+        const plant = plants.find(p => p.id === plantId) || plants[0];
+        document.title = `${plant.name} — Care & Pickup`;
+        document.getElementById('p-name').textContent = plant.name;
+        document.getElementById('p-category').textContent = plant.category;
+        document.getElementById('p-desc').textContent = plant.description;
+        document.getElementById('p-donation').textContent = `$${plant.donation} Donation`;
+        document.getElementById('p-impact').textContent = `100% of this $${plant.donation} gift supports food relief via Hunger at Home (~${plant.mealsProvided} nutritious meals).`;
+        document.getElementById('p-sun').textContent = plant.sun;
+        document.getElementById('p-water').textContent = plant.water;
+        document.getElementById('p-soil').textContent = plant.soil;
+        document.getElementById('p-pickup').textContent = plant.pickup;
+
+        const donateBtn = document.getElementById('donate-link');
+        donateBtn.textContent = `Donate $${plant.donation} & Complete Pickup`;
+        donateBtn.href = `https://hungerathome.org/donate/`;
+      })
+      .catch(err => {
+        document.getElementById('p-name').textContent = "Plant not found";
+      });
+  </script>
+</body>
+</html>

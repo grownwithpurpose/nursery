@@ -1,0 +1,62 @@
+[
+  {
+    "id": "black-mission-fig",
+    "name": "Black Mission Fig",
+    "category": "Fruit trees",
+    "donation": 35,
+    "mealsProvided": 70,
+    "sun": "Full Sun (6+ hrs)",
+    "water": "Moderate / Drought tolerant once established",
+    "soil": "Well-drained loam",
+    "description": "Sweet, dark purple figs with rich strawberry-colored flesh. Thrives in San Jose backyards.",
+    "pickup": "San Jose, CA · By arrangement"
+  },
+  {
+    "id": "meyer-lemon",
+    "name": "Improved Meyer Lemon",
+    "category": "Fruit trees",
+    "donation": 40,
+    "mealsProvided": 80,
+    "sun": "Full Sun (8 hrs)",
+    "water": "Keep evenly moist, avoid soggy roots",
+    "soil": "Citrus & succulent potting mix",
+    "description": "Sweet, thin-skinned culinary lemon that produces fragrant blooms and juicy fruit year-round.",
+    "pickup": "San Jose, CA · By arrangement"
+  },
+  {
+    "id": "heritage-rose",
+    "name": "Climbing Heritage Rose",
+    "category": "Flowering plants",
+    "donation": 25,
+    "mealsProvided": 50,
+    "sun": "Full Sun to Light Afternoon Shade",
+    "water": "Deep watering 1-2 times weekly",
+    "soil": "Rich composted organic soil",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "pickup": "San Jose, CA · By arrangement"
+  },
+  {
+    "id": "crepe-myrtle",
+    "name": "Tuscarora Crepe Myrtle",
+    "category": "Flowering plants",
+    "donation": 30,
+    "mealsProvided": 60,
+    "sun": "Full Sun",
+    "water": "Low to moderate once rooted",
+    "soil": "Adaptable to clay soils",
+    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
+    "pickup": "San Jose, CA · By arrangement"
+  },
+  {
+    "id": "jade-plant",
+    "name": "Sunset Jade Succulent",
+    "category": "Garden favorites",
+    "donation": 15,
+    "mealsProvided": 30,
+    "sun": "Bright indirect light or direct morning sun",
+    "water": "Low (soak and dry completely)",
+    "soil": "Fast-draining cactus mix",
+    "description": "Hardy succulent featuring golden-yellow and crimson leaf margins.",
+    "pickup": "San Jose, CA · By arrangement"
+  }
+]
