@@ -117,7 +117,7 @@
         <div class="spec-item"><span>Local Pickup</span><span id="p-pickup">San Jose, CA</span></div>
       </div>
 
-      <a id="donate-link" href="https://hungerathome.org/donate/" target="_blank" class="btn-donate">
+      <a id="donate-link" href="https://hungerathome.org/donate/" target="_blank" rel="noopener noreferrer" class="btn-donate">
         Donate & Pick Up
       </a>
       <a id="report-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-report" hidden>
@@ -216,8 +216,11 @@
             'Submit the pickup request first, then donate on Hunger at Home’s official site. ' +
             'After donating, report the amount here. Reports are donor-reported until confirmation is checked at pickup.';
         } else {
-          donateBtn.textContent = `Donate $${plant.donation} & Complete Pickup`;
+          donateBtn.textContent = `Donate $${plant.donation} to Hunger at Home`;
           donateBtn.href = 'https://hungerathome.org/donate/';
+          instructions.textContent =
+            'This opens Hunger at Home’s public donation page. Show your confirmation at pickup; ' +
+            'the nursery cannot automatically see or verify donations until tracking is configured.';
         }
       })
       .catch(err => {
