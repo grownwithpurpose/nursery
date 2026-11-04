@@ -3,6 +3,7 @@
     "id": "black-mission-fig",
     "name": "Black Mission Fig",
     "category": "Fruit trees",
+    "Care": "Full sun, moderate water, well-drained soil",
     "donation": 35,
     "mealsProvided": 70,
     "sun": "Full Sun (6+ hrs)",
@@ -15,6 +16,7 @@
     "id": "meyer-lemon",
     "name": "Improved Meyer Lemon",
     "category": "Fruit trees",
+    "Care": "Full sun, keep evenly moist, citrus & succulent potting mix",
     "donation": 40,
     "mealsProvided": 80,
     "sun": "Full Sun (8 hrs)",
@@ -27,6 +29,7 @@
     "id": "heritage-rose",
     "name": "Climbing Heritage Rose",
     "category": "Flowering plants",
+    "Care": "Full sun to light afternoon shade, deep watering 1-2 times weekly, rich composted organic soil",
     "donation": 25,
     "mealsProvided": 50,
     "sun": "Full Sun to Light Afternoon Shade",
@@ -39,6 +42,7 @@
     "id": "crepe-myrtle",
     "name": "Tuscarora Crepe Myrtle",
     "category": "Flowering plants",
+    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
     "donation": 30,
     "mealsProvided": 60,
     "sun": "Full Sun",
@@ -51,12 +55,26 @@
     "id": "jade-plant",
     "name": "Sunset Jade Succulent",
     "category": "Garden favorites",
+    "Care": "Bright indirect light or direct morning sun, low water (soak and dry completely), fast-draining cactus mix",
     "donation": 15,
     "mealsProvided": 30,
     "sun": "Bright indirect light or direct morning sun",
     "water": "Low (soak and dry completely)",
     "soil": "Fast-draining cactus mix",
     "description": "Hardy succulent featuring golden-yellow and crimson leaf margins.",
+    "pickup": "San Jose, CA · By arrangement"
+  }
+  {
+    "id": "yellow-rose",
+    "name": "Yellow Rose",
+    "category": "Flowering plants",
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
+    "donation": 15,
+    "mealsProvided": 30,
+    "sun": "Full Sun",
+    "water": "Deep watering 1-2 times weekly",
+    "soil": "Rich composted organic soil",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "pickup": "San Jose, CA · By arrangement"
   }
 ]

@@ -71,6 +71,20 @@
       box-shadow: 0 4px 12px rgba(36, 70, 56, 0.25);
     }
     .btn-donate:active { transform: scale(0.98); }
+    .btn-report {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      background: var(--clay);
+      color: #ffffff;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-report[hidden] { display: none; }
     .instructions {
       margin-top: 16px;
       font-size: 12px;
@@ -106,14 +120,53 @@
       <a id="donate-link" href="https://hungerathome.org/donate/" target="_blank" class="btn-donate">
         Donate & Pick Up
       </a>
+      <a id="report-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-report" hidden>
+        Report Donation & Arrange Pickup
+      </a>
 
-      <p class="instructions">
-        Tap to donate on Hunger at Home's official portal. Simply show your confirmation email at pickup!
+      <p class="instructions" id="donation-instructions">
+        Donate through Hunger at Home's official portal and show your confirmation at pickup. The nursery cannot automatically verify donations.
       </p>
     </div>
   </div>
 
   <script>
+    const trackingForms = {
+      start: {
+        baseUrl: '',
+        fields: {
+          'Pickup request ID': '',
+          'Plant ID': '',
+          'Expected donation amount (USD)': ''
+        }
+      },
+      report: {
+        baseUrl: '',
+        fields: {
+          'Pickup request ID': '',
+          'Plant ID': '',
+          'Expected donation amount (USD)': '',
+          'Donation amount reported (USD)': ''
+        }
+      }
+    };
+
+    function makePrefilledFormUrl(formConfig, values) {
+      const url = new URL(formConfig.baseUrl);
+      Object.entries(formConfig.fields).forEach(([fieldName, entryId]) => {
+        if (!entryId || !(fieldName in values)) {
+          throw new Error(`Missing Google Form field configuration for "${fieldName}".`);
+        }
+        url.searchParams.set(entryId, values[fieldName]);
+      });
+      return url.toString();
+    }
+
+    function hasFormConfig(formConfig) {
+      return Boolean(formConfig.baseUrl) &&
+        Object.values(formConfig.fields).every(Boolean);
+    }
+
     const params = new URLSearchParams(window.location.search);
     const plantId = params.get('id') || 'black-mission-fig';
 
@@ -133,8 +186,39 @@
         document.getElementById('p-pickup').textContent = plant.pickup;
 
         const donateBtn = document.getElementById('donate-link');
-        donateBtn.textContent = `Donate $${plant.donation} & Complete Pickup`;
-        donateBtn.href = `https://hungerathome.org/donate/`;
+        const reportBtn = document.getElementById('report-link');
+        const instructions = document.getElementById('donation-instructions');
+        const startTrackingReady = hasFormConfig(trackingForms.start);
+        const reportTrackingReady = hasFormConfig(trackingForms.report);
+
+        if (startTrackingReady && reportTrackingReady) {
+          const storageKey = `nursery-pickup-request-${plant.id}`;
+          let requestId = sessionStorage.getItem(storageKey);
+          if (!requestId) {
+            requestId = globalThis.crypto?.randomUUID?.() ||
+              `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+            sessionStorage.setItem(storageKey, requestId);
+          }
+
+          const formValues = {
+            'Pickup request ID': requestId,
+            'Plant ID': plant.id,
+            'Expected donation amount (USD)': String(plant.donation)
+          };
+          donateBtn.textContent = `Log Pickup Request & Donate $${plant.donation}`;
+          donateBtn.href = makePrefilledFormUrl(trackingForms.start, formValues);
+          reportBtn.href = makePrefilledFormUrl(trackingForms.report, {
+            ...formValues,
+            'Donation amount reported (USD)': String(plant.donation)
+          });
+          reportBtn.hidden = false;
+          instructions.textContent =
+            'Submit the pickup request first, then donate on Hunger at Home’s official site. ' +
+            'After donating, report the amount here. Reports are donor-reported until confirmation is checked at pickup.';
+        } else {
+          donateBtn.textContent = `Donate $${plant.donation} & Complete Pickup`;
+          donateBtn.href = 'https://hungerathome.org/donate/';
+        }
       })
       .catch(err => {
         document.getElementById('p-name').textContent = "Plant not found";
