@@ -75,6 +75,11 @@
     "water": "Deep watering 1-2 times weekly",
     "soil": "Rich composted organic soil",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
-    "pickup": "San Jose, CA · By arrangement"
+    "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "yellow-rose-1.jpg",
+      "2": "yellow-rose-2.jpg",
+      "3": "yellow-rose-3.jpg"
+    }
   }
 ]

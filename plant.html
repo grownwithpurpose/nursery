@@ -25,12 +25,36 @@
     .header { text-align: center; margin-bottom: 24px; }
     .header h2 { font-family: Georgia, serif; color: var(--forest); font-size: 20px; }
     .header p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--clay); font-weight: bold; }
-    .card {
+    .page-section {
       background: var(--card-bg);
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.06);
       border: 1px solid #e7e4d8;
+    }
+    .page-section + .page-section { margin-top: 18px; }
+    .pickup-section { background: #edf3ec; border-color: #c9d8c3; }
+    .section-heading { margin-bottom: 20px; }
+    .section-heading p {
+      color: var(--clay);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+    .section-heading h2 {
+      margin-top: 4px;
+      color: var(--forest);
+      font: 500 24px/1.2 Georgia, serif;
+    }
+    .pickup-section .section-heading h2 { font-size: 26px; }
+    .pickup-location {
+      padding: 12px 14px;
+      border: 1px solid #d5dfd1;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.72);
+      font-size: 13px;
+      margin-bottom: 18px;
     }
     .badge {
       display: inline-block;
@@ -57,34 +81,42 @@
     .spec-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0ede3; font-size: 14px; }
     .spec-item span:first-child { color: #738076; font-weight: 500; }
     .spec-item span:last-child { color: var(--ink); font-weight: 600; text-align: right; max-width: 60%; }
-    .btn-donate {
+    .donation-form { margin-top: 0; }
+    .form-field { margin-bottom: 14px; }
+    .form-field label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; }
+    .form-field input {
       display: block;
       width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #cbd4cb;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+    .form-field input:focus { outline: 2px solid var(--sage); outline-offset: 1px; }
+    .consent-field { display: flex; gap: 9px; align-items: flex-start; margin: 18px 0; font-size: 12px; }
+    .consent-field input { margin-top: 4px; }
+    .form-submit, .continue-donation {
+      display: block;
+      width: 100%;
+      border: 0;
       background: var(--forest);
-      color: #ffffff;
-      text-align: center;
-      padding: 16px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(36, 70, 56, 0.25);
-    }
-    .btn-donate:active { transform: scale(0.98); }
-    .btn-report {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-      background: var(--clay);
-      color: #ffffff;
-      text-align: center;
+      color: white;
       padding: 14px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
+      border-radius: 10px;
+      font: 600 15px Arial, sans-serif;
+      cursor: pointer;
+      text-align: center;
       text-decoration: none;
     }
-    .btn-report[hidden] { display: none; }
+    .form-submit { margin-bottom: 18px; }
+    .form-submit:disabled { opacity: 0.65; cursor: wait; }
+    .form-note, .form-error { margin-top: 10px; font-size: 12px; }
+    .form-note { color: #717d74; }
+    .form-error { color: #9c3025; }
+    .honeypot { position: absolute; left: -10000px; }
     .instructions {
       margin-top: 16px;
       font-size: 12px;
@@ -100,7 +132,11 @@
       <h2>San Jose, California</h2>
     </div>
 
-    <div class="card" id="plant-card">
+    <section class="page-section care-section" id="plant-card" aria-labelledby="care-heading">
+      <div class="section-heading">
+        <p>Plant details</p>
+        <h2 id="care-heading">Care information</h2>
+      </div>
       <div class="badge" id="p-category">Plant Category</div>
       <h1 id="p-name">Loading Plant...</h1>
       <p class="desc" id="p-desc"></p>
@@ -114,58 +150,88 @@
         <div class="spec-item"><span>Sun Needs</span><span id="p-sun">—</span></div>
         <div class="spec-item"><span>Watering</span><span id="p-water">—</span></div>
         <div class="spec-item"><span>Soil Type</span><span id="p-soil">—</span></div>
-        <div class="spec-item"><span>Local Pickup</span><span id="p-pickup">San Jose, CA</span></div>
       </div>
+    </section>
 
-      <a id="donate-link" href="https://hungerathome.org/donate/" target="_blank" rel="noopener noreferrer" class="btn-donate">
-        Donate & Pick Up
-      </a>
-      <a id="report-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-report" hidden>
-        Report Donation & Arrange Pickup
-      </a>
-
-      <p class="instructions" id="donation-instructions">
-        Donate through Hunger at Home's official portal and show your confirmation at pickup. The nursery cannot automatically verify donations.
-      </p>
-    </div>
+    <section class="page-section pickup-section" aria-labelledby="pickup-heading">
+      <div class="section-heading">
+        <p>Reserve this plant</p>
+        <h2 id="pickup-heading">Pickup information</h2>
+      </div>
+      <div class="pickup-location"><strong>Local pickup</strong><br><span id="p-pickup">San Jose, CA</span></div>
+      <form id="donation-form" class="donation-form" method="post">
+        <input type="hidden" name="visitorId" id="visitor-id">
+        <input type="hidden" name="plantId" id="plant-id">
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="form-field">
+          <label for="donor-name">Your name</label>
+          <input type="text" name="name" id="donor-name" maxlength="120" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="donor-phone">Phone number <span>(optional)</span></label>
+          <input type="tel" name="phone" id="donor-phone" maxlength="25" autocomplete="tel" title="Enter 7–15 digits. You may include a leading +, spaces, parentheses, periods, or hyphens.">
+        </div>
+        <div class="form-field">
+          <label for="donor-email">Email address <span>(optional)</span></label>
+          <input type="email" name="email" id="donor-email" maxlength="254" autocomplete="email">
+        </div>
+        <label class="consent-field">
+          <input type="checkbox" name="consent" value="yes" required>
+          <span>I agree that the nursery may store these details in its private Google Sheet for pickup coordination. They will not be sent to Hunger at Home.</span>
+        </label>
+        <button id="save-details" type="submit" class="form-submit" disabled>Save details & continue</button>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <p class="form-note">After your details are saved, you can continue to Hunger at Home’s donation page. Your details are not sent there, and this form does not process a donation.</p>
+      </form>
+      <p class="instructions" id="donation-instructions">Phone and email are optional. Your name and consent are required to save pickup details.</p>
+    </section>
   </div>
 
   <script>
-    const trackingForms = {
-      start: {
-        baseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSexHO-PdDZKATFjBMgggRx5WpyHq7MeZM4DxyU95TYppipvaQ/viewform',
-        fields: {
-          'Pickup request ID': '',
-          'Plant ID': '',
-          'Expected donation amount (USD)': ''
-        }
-      },
-      report: {
-        baseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfKe8rY0OHP7DoRLl5lVYIoYxEWTmJHZ05snCRgAdu507bQ_A/viewform',
-        fields: {
-          'Pickup request ID': '',
-          'Plant ID': '',
-          'Expected donation amount (USD)': '',
-          'Donation amount reported (USD)': ''
-        }
+    const DONATION_TRACKER_URL = '';
+    const donationForm = document.getElementById('donation-form');
+    const saveDetailsButton = document.getElementById('save-details');
+    const formError = document.getElementById('form-error');
+    const phoneInput = document.getElementById('donor-phone');
+    const emailInput = document.getElementById('donor-email');
+    const emailPattern = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,63}$/i;
+
+    phoneInput.addEventListener('input', () => {
+      const value = phoneInput.value.trim();
+      const digitCount = value.replace(/\D/g, '').length;
+      const validFormat = /^\+?[0-9][0-9\s().-]*[0-9]$/.test(value);
+      phoneInput.setCustomValidity(
+        value && (!validFormat || digitCount < 7 || digitCount > 15)
+          ? 'Enter a valid phone number with 7–15 digits.'
+          : ''
+      );
+    });
+
+    emailInput.addEventListener('input', () => {
+      const value = emailInput.value.trim();
+      emailInput.setCustomValidity(
+        value && !emailPattern.test(value)
+          ? 'Enter a valid email address, such as name@example.com.'
+          : ''
+      );
+    });
+
+    donationForm.addEventListener('submit', event => {
+      if (!DONATION_TRACKER_URL) {
+        event.preventDefault();
+        formError.textContent = 'Pickup details are not available yet. Please contact the nursery to arrange pickup.';
+        formError.hidden = false;
+        return;
       }
-    };
 
-    function makePrefilledFormUrl(formConfig, values) {
-      const url = new URL(formConfig.baseUrl);
-      Object.entries(formConfig.fields).forEach(([fieldName, entryId]) => {
-        if (!entryId || !(fieldName in values)) {
-          throw new Error(`Missing Google Form field configuration for "${fieldName}".`);
-        }
-        url.searchParams.set(entryId, values[fieldName]);
-      });
-      return url.toString();
-    }
-
-    function hasFormConfig(formConfig) {
-      return Boolean(formConfig.baseUrl) &&
-        Object.values(formConfig.fields).every(Boolean);
-    }
+      donationForm.action = DONATION_TRACKER_URL;
+      saveDetailsButton.disabled = true;
+      saveDetailsButton.textContent = 'Saving details…';
+      formError.hidden = true;
+    });
 
     const params = new URLSearchParams(window.location.search);
     const plantId = params.get('id') || 'black-mission-fig';
@@ -184,47 +250,23 @@
         document.getElementById('p-water').textContent = plant.water;
         document.getElementById('p-soil').textContent = plant.soil;
         document.getElementById('p-pickup').textContent = plant.pickup;
+        document.getElementById('plant-id').value = plant.id;
+        saveDetailsButton.textContent = 'Save details & continue';
 
-        const donateBtn = document.getElementById('donate-link');
-        const reportBtn = document.getElementById('report-link');
-        const instructions = document.getElementById('donation-instructions');
-        const startTrackingReady = hasFormConfig(trackingForms.start);
-        const reportTrackingReady = hasFormConfig(trackingForms.report);
-
-        if (startTrackingReady && reportTrackingReady) {
-          const storageKey = `nursery-pickup-request-${plant.id}`;
-          let requestId = sessionStorage.getItem(storageKey);
-          if (!requestId) {
-            requestId = globalThis.crypto?.randomUUID?.() ||
-              `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-            sessionStorage.setItem(storageKey, requestId);
-          }
-
-          const formValues = {
-            'Pickup request ID': requestId,
-            'Plant ID': plant.id,
-            'Expected donation amount (USD)': String(plant.donation)
-          };
-          donateBtn.textContent = `Log Pickup Request & Donate $${plant.donation}`;
-          donateBtn.href = makePrefilledFormUrl(trackingForms.start, formValues);
-          reportBtn.href = makePrefilledFormUrl(trackingForms.report, {
-            ...formValues,
-            'Donation amount reported (USD)': String(plant.donation)
-          });
-          reportBtn.hidden = false;
-          instructions.textContent =
-            'Submit the pickup request first, then donate on Hunger at Home’s official site. ' +
-            'After donating, report the amount here. Reports are donor-reported until confirmation is checked at pickup.';
-        } else {
-          donateBtn.textContent = `Donate $${plant.donation} to Hunger at Home`;
-          donateBtn.href = 'https://hungerathome.org/donate/';
-          instructions.textContent =
-            'This opens Hunger at Home’s public donation page. Show your confirmation at pickup; ' +
-            'the nursery cannot automatically see or verify donations until tracking is configured.';
+        const visitorStorageKey = 'nursery-visitor-id';
+        let visitorId = sessionStorage.getItem(visitorStorageKey);
+        if (!visitorId) {
+          visitorId = globalThis.crypto?.randomUUID?.() ||
+            `visitor-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+          sessionStorage.setItem(visitorStorageKey, visitorId);
         }
+        document.getElementById('visitor-id').value = visitorId;
+        saveDetailsButton.disabled = false;
       })
       .catch(err => {
-        document.getElementById('p-name').textContent = "Plant not found";
+        console.error('Unable to load the plant details:', err);
+        document.getElementById('p-name').textContent = 'Plant unavailable';
+        saveDetailsButton.textContent = 'Plant details unavailable';
       });
   </script>
 </body>

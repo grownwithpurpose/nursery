@@ -20,23 +20,20 @@ If their mission resonates with you, consider taking a moment to support their w
 * **[Visit Hunger at Home](https://hungerathome.org/)** to learn more about their story.
 * **[Make a Direct Donation](https://hungerathome.org/donate/)** to help turn surplus ingredients into wholesome, comforting meals for our neighbors.
 
-## Donation and pickup tracking
+## Donation contact and pickup tracking
 
-The nursery site does not receive or verify payments. Donations go directly to Hunger at Home, and the nursery has no integration with its donation processor. The tracking flow therefore distinguishes:
+The plant page collects the visitor's name and optional phone/email. With the visitor's consent, it posts those details and the plant ID to a Google Apps Script web app that appends a row to the private Sheet. The **Save details & continue** button is above the fields. After the Sheet write succeeds, the confirmation page shows **Donate & Arrange Pickup** at the bottom, linking separately to Hunger at Home's public donation page.
 
-- **Pickup request / donation started:** a Google Form submission before the donor visits Hunger at Home. This counts submitted requests, not payment attempts confirmed by Hunger at Home.
-- **Donor-reported donation:** a second form submission after the donor gives. The reported amount is not verified automatically.
-- **Verified at pickup:** staff check the donor's confirmation in person and record the verified amount and pickup status in the private spreadsheet.
+The contact details are sent only to the nursery's Google Sheet; they are not forwarded to Hunger at Home. The public donation page does not provide a confirmed partner integration or a way for this site to prefill those details. A Sheet row records a pickup/contact request only; it does not prove a donation or record the amount. Donations must be verified separately at pickup. Do not collect card details or retain donation receipts.
 
-Do not collect payment-card details or upload/store donation receipts. A report is not proof of payment, and the nursery should not issue a tax receipt for a donation processed by Hunger at Home.
+### Configure the private Google Sheet endpoint
 
-### Set up the private Google Sheet and forms
+1. Keep the Google Sheet private. Create or use a spreadsheet you control and copy its spreadsheet ID from its URL.
+2. At [script.google.com](https://script.google.com/), create or open an Apps Script project and replace the old Forms script with [`google-sheets-tracker.gs`](./google-sheets-tracker.gs).
+3. In Apps Script **Project Settings → Script properties**, add `DONATION_SPREADSHEET_ID` with your spreadsheet ID as its value. Do not put this ID in the public website.
+4. Run `setupDonationSheet` and approve the requested Sheets access. It creates or checks a **Donations** tab with columns for Visitor ID, Name, Phone number, Email address, and Plant id. If the tab has the previous six-column header including **In honor/memory of**, setup removes that column and its values.
+5. To publish for the first time, choose **Deploy → New deployment → Web app**. If an earlier version is already deployed, choose **Deploy → Manage deployments → Edit**, select **New version**, and deploy the update. In either case, set it to **Execute as me** and access **Anyone** so visitors can submit without signing in. Copy the public `/exec` URL. This public endpoint accepts form submissions, so keep the spreadsheet private and monitor submissions for spam. The script validates fields and includes a honeypot, but a public endpoint cannot establish that a submitted identity is genuine.
+6. Copy the web app `/exec` URL into `DONATION_TRACKER_URL` in [`plant.html`](./plant.html), then publish the site.
+7. Test a submission using non-sensitive test details and verify the row appears in the **Donations** tab. Confirm that only after the row is recorded does the response page display **Donate & Arrange Pickup** at the bottom. Remove the test row afterward.
 
-1. In your Google account, create a new Apps Script project at [script.google.com](https://script.google.com/).
-2. Copy the contents of [`google-sheets-tracker.gs`](./google-sheets-tracker.gs) into the Apps Script editor and run `setupNurseryDonationTracker` once. Review and approve Google's requested permissions. The script creates a spreadsheet, a pickup-request form, and a donor-report form in your account; rerunning it creates additional copies.
-3. Open the Apps Script execution log and copy the JSON configuration it prints. Keep the spreadsheet private and share it only with staff who verify pickups. The public forms intentionally do not collect email addresses.
-4. In [`plant.html`](./plant.html), replace the empty `trackingForms.start` and `trackingForms.report` values with the corresponding `baseUrl` and `fields` values from that JSON. The `fields` values are the Google Form `entry.*` identifiers. Save and publish the site.
-5. Test with a form submission. Submit the pickup-request form and verify it appears in the spreadsheet; follow its confirmation link to Hunger at Home. Then submit the donor-report form and verify the reported amount appears. Remove test rows before launch. The form response tabs show the number of submitted requests/reports and reported amounts; those are not counts of unique people or processor-verified donations.
-6. At pickup, find the request ID in the form responses and add a row for it in **Pickup verification**. Check the donor's Hunger at Home confirmation in person, then record whether it was checked, the amount verified, and whether the plant was picked up. Do not retain the receipt.
-
-The request ID is stored in the visitor's current browser tab session so the two form submissions can be matched. If they use a different tab session or device, they may get a different ID. Repeated or false public form submissions are possible; reconcile requests against the donor's confirmation at pickup. No spreadsheet or form credentials belong in this repository.
+The generated Visitor ID distinguishes a browser-tab session, not a verified person. Phone and email are optional; the donor's name and consent are required. Tell visitors these details are stored in the nursery's Sheet for pickup coordination, restrict Sheet access to people who need it, and delete records when they are no longer needed. Existing Google Forms created by the previous setup are not used by this flow; stop accepting responses or remove those forms separately in your Google account if desired. No credentials or private Sheet IDs belong in this repository.

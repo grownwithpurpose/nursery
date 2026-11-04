@@ -1,104 +1,140 @@
-function setupNurseryDonationTracker() {
-  const spreadsheet = SpreadsheetApp.create("Little Garden Nursery - Donation and Pickup Tracker");
-  const verificationSheet = spreadsheet.getSheets()[0];
-  verificationSheet.setName("Pickup verification");
-  verificationSheet.getRange(1, 1, 1, 7).setValues([[
-    "Pickup request ID",
-    "Plant ID",
-    "Expected donation (USD)",
-    "Amount verified at pickup (USD)",
-    "Donation confirmation checked",
-    "Plant picked up",
-    "Pickup date"
-  ]]);
-  verificationSheet.setFrozenRows(1);
-  verificationSheet.autoResizeColumns(1, 7);
+const DONATION_SHEET_PROPERTY = "DONATION_SPREADSHEET_ID";
+const DONATION_SHEET_NAME = "Donations";
+const DONATION_HEADERS = [
+  "Visitor ID",
+  "Name",
+  "Phone number",
+  "Email address",
+  "Plant id"
+];
+const PREVIOUS_DONATION_HEADERS = DONATION_HEADERS.concat("In honor/memory of");
 
-  const startForm = FormApp.create("Nursery Pickup Request - Donation Started")
-    .setDescription("Log your pickup request before donating directly to Hunger at Home.")
-    .setCollectEmail(false)
-    .setConfirmationMessage(
-      "Your pickup request is logged. Donate directly to Hunger at Home at https://hungerathome.org/donate/. " +
-      "After donating, return to the nursery page and submit the donation report. Your gift is not verified until confirmation is checked at pickup."
-    )
-    .setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
+function setupDonationSheet() {
+  const spreadsheetId = PropertiesService.getScriptProperties()
+    .getProperty(DONATION_SHEET_PROPERTY);
+  if (!spreadsheetId) {
+    throw new Error(
+      "Set the DONATION_SPREADSHEET_ID script property to your private Google Sheet ID first."
+    );
+  }
 
-  startForm.addTextItem().setTitle("Pickup request ID").setRequired(true);
-  startForm.addTextItem().setTitle("Plant ID").setRequired(true);
-  addMoneyItem(startForm, "Expected donation amount (USD)");
+  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+  let sheet = spreadsheet.getSheetByName(DONATION_SHEET_NAME);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(DONATION_SHEET_NAME);
+  }
 
-  const reportForm = FormApp.create("Nursery Donation Report - Donor Reported")
-    .setDescription("Report your donation amount. This report is not payment verification.")
-    .setCollectEmail(false)
-    .setConfirmationMessage(
-      "Thank you. Your donation amount is recorded as donor-reported and will be checked at pickup. " +
-      "Please show your Hunger at Home confirmation to the nursery at pickup."
-    )
-    .setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, DONATION_HEADERS.length).setValues([DONATION_HEADERS]);
+    sheet.setFrozenRows(1);
+    sheet.autoResizeColumns(1, DONATION_HEADERS.length);
+    return;
+  }
 
-  reportForm.addTextItem().setTitle("Pickup request ID").setRequired(true);
-  reportForm.addTextItem().setTitle("Plant ID").setRequired(true);
-  addMoneyItem(reportForm, "Expected donation amount (USD)");
-  addMoneyItem(reportForm, "Donation amount reported (USD)");
-
-  Logger.log(JSON.stringify({
-    spreadsheetUrl: spreadsheet.getUrl(),
-    startForm: getPrefillConfig(startForm, {
-      "Pickup request ID": "SAMPLE_REQUEST_ID",
-      "Plant ID": "SAMPLE_PLANT_ID",
-      "Expected donation amount (USD)": "11.11"
-    }),
-    reportForm: getPrefillConfig(reportForm, {
-      "Pickup request ID": "SAMPLE_REQUEST_ID",
-      "Plant ID": "SAMPLE_PLANT_ID",
-      "Expected donation amount (USD)": "11.11",
-      "Donation amount reported (USD)": "22.22"
-    })
-  }, null, 2));
+  const existingHeaders = sheet
+    .getRange(1, 1, 1, sheet.getLastColumn())
+    .getDisplayValues()[0];
+  if (PREVIOUS_DONATION_HEADERS.every(function(header, index) {
+    return existingHeaders[index] === header;
+  })) {
+    sheet.deleteColumn(DONATION_HEADERS.length + 1);
+  } else if (DONATION_HEADERS.some(function(header, index) {
+    return existingHeaders[index] !== header;
+  })) {
+    throw new Error(
+      'The "Donations" tab has unexpected headers. Review it before running setup.'
+    );
+  }
+  sheet.getRange(1, 1, 1, DONATION_HEADERS.length).setValues([DONATION_HEADERS]);
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, DONATION_HEADERS.length);
 }
 
-function addMoneyItem(form, title) {
-  const validation = FormApp.createTextValidation()
-    .requireNumberGreaterThanOrEqualTo(0)
-    .setHelpText("Enter a non-negative amount in US dollars.")
-    .build();
-  form.addTextItem()
-    .setTitle(title)
-    .setRequired(true)
-    .setValidation(validation);
-}
+function doPost(event) {
+  const values = event && event.parameter ? event.parameter : {};
+  if (values.website) {
+    return donationResponse();
+  }
 
-function getPrefillConfig(form, sampleValues) {
-  let response = form.createResponse();
-  const fields = {};
+  const visitorId = getText(values.visitorId, 80);
+  const name = getText(values.name, 120);
+  const phone = getText(values.phone, 40);
+  const email = getText(values.email, 254);
+  const plantId = getText(values.plantId, 80);
+  const consent = getText(values.consent, 10);
 
-  form.getItems(FormApp.ItemType.TEXT).forEach(function(item) {
-    const textItem = item.asTextItem();
-    const title = textItem.getTitle();
-    response = response.withItemResponse(textItem.createResponse(sampleValues[title]));
-  });
+  if (!/^[a-zA-Z0-9-]{16,80}$/.test(visitorId) ||
+      !name ||
+      consent !== "yes" ||
+      !/^[a-z0-9-]{1,80}$/.test(plantId) ||
+      (phone && (!/^\+?[0-9][0-9\s().-]*[0-9]$/.test(phone) ||
+        phone.replace(/\D/g, "").length < 7 ||
+        phone.replace(/\D/g, "").length > 15)) ||
+      (email && !/^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,63}$/i.test(email))) {
+    return errorResponse();
+  }
 
-  const query = response.toPrefilledUrl().split("?")[1] || "";
-  const parameters = query.split("&").filter(Boolean).map(function(parameter) {
-    const parts = parameter.split("=");
-    return [
-      decodeURIComponent(parts[0].replace(/\+/g, " ")),
-      decodeURIComponent((parts[1] || "").replace(/\+/g, " "))
-    ];
-  });
-  Object.entries(sampleValues).forEach(function(entry) {
-    const [title, sampleValue] = entry;
-    const field = parameters.find(function(parameter) {
-      return parameter[1] === sampleValue;
-    });
-    if (!field) {
-      throw new Error("Could not locate the prefilled field for: " + title);
+  const spreadsheetId = PropertiesService.getScriptProperties()
+    .getProperty(DONATION_SHEET_PROPERTY);
+  if (!spreadsheetId) {
+    console.error("Missing script property: " + DONATION_SHEET_PROPERTY);
+    return errorResponse();
+  }
+
+  try {
+    const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    const sheet = spreadsheet.getSheetByName(DONATION_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('Missing "Donations" tab. Run setupDonationSheet first.');
     }
-    fields[title] = field[0];
-  });
 
-  return {
-    baseUrl: form.getPublishedUrl(),
-    fields: fields
-  };
+    const lock = LockService.getScriptLock();
+    lock.waitLock(10000);
+    try {
+      sheet.appendRow([
+        asSheetText(visitorId),
+        asSheetText(name),
+        asSheetText(phone),
+        asSheetText(email),
+        asSheetText(plantId)
+      ]);
+    } finally {
+      lock.releaseLock();
+    }
+  } catch (error) {
+    console.error("Unable to record donation contact:", error);
+    return errorResponse();
+  }
+
+  return donationResponse();
+}
+
+function getText(value, maxLength) {
+  return String(value || "").trim().slice(0, maxLength);
+}
+
+function asSheetText(value) {
+  return /^[=+\-@]/.test(value) ? "'" + value : value;
+}
+
+function donationResponse() {
+  return HtmlService.createHtmlOutput(
+    '<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Details saved</title><body style="font:16px/1.6 Arial,sans-serif;max-width:560px;margin:48px auto;padding:24px;color:#29372f;min-height:70vh;display:flex;flex-direction:column">' +
+    '<h1 style="color:#244638">Your details are saved</h1>' +
+    '<p>Your name and optional contact details were saved to the nursery’s private sheet for pickup coordination. They were not sent to Hunger at Home.</p>' +
+    '<p>This does not confirm or process a donation.</p>' +
+    '<div style="flex:1"></div>' +
+    '<a href="https://hungerathome.org/donate/" target="_blank" rel="noopener noreferrer" style="display:block;box-sizing:border-box;width:100%;padding:14px;border-radius:10px;background:#244638;color:#fff;text-align:center;text-decoration:none;font-weight:600">Donate &amp; Arrange Pickup</a>' +
+    '</body></html>'
+  );
+}
+
+function errorResponse() {
+  return HtmlService.createHtmlOutput(
+    '<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Details not saved</title><body style="font:16px/1.6 Arial,sans-serif;max-width:560px;margin:48px auto;padding:24px;color:#29372f">' +
+    '<h1 style="color:#244638">We could not save your details</h1>' +
+    '<p>Please return to the nursery page and try again, or contact the nursery to arrange pickup.</p></body></html>'
+  );
 }
