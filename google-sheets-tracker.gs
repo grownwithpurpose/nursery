@@ -5,9 +5,9 @@ const DONATION_HEADERS = [
   "Name",
   "Phone number",
   "Email address",
-  "Plant id"
+  "Plant id",
+  "Submitted at"
 ];
-const PREVIOUS_DONATION_HEADERS = DONATION_HEADERS.concat("In honor/memory of");
 
 function setupDonationSheet() {
   const spreadsheetId = PropertiesService.getScriptProperties()
@@ -26,26 +26,37 @@ function setupDonationSheet() {
 
   if (sheet.getLastRow() === 0) {
     sheet.getRange(1, 1, 1, DONATION_HEADERS.length).setValues([DONATION_HEADERS]);
+    sheet.getRange(2, DONATION_HEADERS.length, sheet.getMaxRows() - 1, 1)
+      .setNumberFormat("yyyy-mm-dd hh:mm:ss");
     sheet.setFrozenRows(1);
     sheet.autoResizeColumns(1, DONATION_HEADERS.length);
     return;
   }
 
   const existingHeaders = sheet
-    .getRange(1, 1, 1, sheet.getLastColumn())
+    .getRange(1, 1, 1, Math.max(sheet.getLastColumn(), DONATION_HEADERS.length))
     .getDisplayValues()[0];
-  if (PREVIOUS_DONATION_HEADERS.every(function(header, index) {
+  const baseHeadersMatch = DONATION_HEADERS.slice(0, 5).every(function(header, index) {
     return existingHeaders[index] === header;
-  })) {
-    sheet.deleteColumn(DONATION_HEADERS.length + 1);
-  } else if (DONATION_HEADERS.some(function(header, index) {
-    return existingHeaders[index] !== header;
-  })) {
+  });
+  const hasLegacyDedicationColumn =
+    existingHeaders[5] === "In honor/memory of";
+  if (!baseHeadersMatch) {
     throw new Error(
       'The "Donations" tab has unexpected headers. Review it before running setup.'
     );
   }
+  if (hasLegacyDedicationColumn) {
+    sheet.deleteColumn(6);
+  } else if (existingHeaders[5] &&
+      existingHeaders[5] !== DONATION_HEADERS[5]) {
+    throw new Error(
+      'The "Donations" tab has an unexpected sixth column. Review it before running setup.'
+    );
+  }
   sheet.getRange(1, 1, 1, DONATION_HEADERS.length).setValues([DONATION_HEADERS]);
+  sheet.getRange(2, DONATION_HEADERS.length, Math.max(sheet.getMaxRows() - 1, 1), 1)
+    .setNumberFormat("yyyy-mm-dd hh:mm:ss");
   sheet.setFrozenRows(1);
   sheet.autoResizeColumns(1, DONATION_HEADERS.length);
 }
@@ -96,7 +107,8 @@ function doPost(event) {
         asSheetText(name),
         asSheetText(phone),
         asSheetText(email),
-        asSheetText(plantId)
+        asSheetText(plantId),
+        new Date()
       ]);
     } finally {
       lock.releaseLock();
