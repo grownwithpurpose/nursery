@@ -2,7 +2,7 @@
   {
     "id": "crepe-myrtle",
     "name": "Tuscarora Crepe Myrtle",
-    "category": "Flowering plants",
+    "category": "Trees",
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
     "donation": 30,
     "mealsProvided": 60,
@@ -15,7 +15,7 @@
   {
     "id": "avacado",
     "name": "Avacado",
-    "category": "Flowering plants",
+    "category": "Trees",
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
     "donation": 30,
     "mealsProvided": 60,
@@ -31,7 +31,7 @@
   {
     "id": "yellow-rose",
     "name": "Yellow Rose",
-    "category": "Flowering plants",
+    "category": "Plants and Shrubs",
     "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
     "donation": 15,
     "mealsProvided": 30,
@@ -50,41 +50,34 @@
     }
   },
   {
+    "category": "Plants and Shrubs",
     "id": "pink-rose-vine",
     "name": "Ceceille Brunner Rose Vine",
-    "size": "25 gallon",
-    "category": "Flowering plants",
-    "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "What you get for your money": "A healthy potted 25 gallon plant. Trimmed and ready for upcoming season",
     "donation": 40,
     "mealsProvided": 80,
-    "sun": "Full Sun",
-    "water": "Deep watering 1-2 times weekly",
-    "soil": "Rich composted organic soil",
-    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Deep watering 1-2 times weekly",
     "pickup": "San Jose, CA · By arrangement",
-    "marketReference": {
-      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
-      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
-    },
     "pictures": {
       "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
       "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
+    },
+    "marketReference": {
+      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
+      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
     }
   },
   {
     "id": "Small-Flower-Vase",
-    "name": "Small-Flower-Vase",
+    "name": "Assorted Flowers of the Day",
     "size": "6 inch",
-    "category": "Assorted Flowers of the day from the garden",
+    "category": "Flower Vase — Assorted Flowers of the Day",
     "Care": "",
     "donation": 40,
     "mealsProvided": 80,
-    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "description": "A seasonal arrangement of assorted flowers picked from the garden.",
     "pickup": "San Jose, CA · By arrangement",
-    "marketReference": {
-      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
-      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
-    },
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
@@ -93,8 +86,8 @@
   },
   {
     "id": "Plant consulting",
-    "name": "Plant consulting",
-    "category": "Consultation. Any problems with your plants?",
+    "name": "Plant Consultation",
+    "category": "Consultation",
     "Care": "",
     "donation": 40,
     "mealsProvided": 80,

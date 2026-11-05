@@ -171,6 +171,36 @@
 
     .lg-cards {
       display: grid;
+      gap: 32px;
+    }
+    .lg-catalog-group { min-width: 0; padding: 0; }
+    .lg-category-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding: 18px 22px;
+      border: 1px solid #cbd9c8;
+      border-left: 6px solid var(--forest);
+      border-radius: 12px;
+      background: #eaf0e7;
+    }
+    .lg-category-heading h3 {
+      margin: 0;
+      color: var(--forest);
+      font: 500 clamp(22px, 2.4vw, 30px)/1.2 Georgia, serif;
+    }
+    .lg-category-count {
+      flex: 0 0 auto;
+      padding: 6px 11px;
+      border-radius: 20px;
+      background: white;
+      color: var(--forest);
+      font: 700 12px/1.2 Arial, sans-serif;
+    }
+    .lg-category-cards {
+      display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
     }
@@ -197,6 +227,10 @@
       margin: 10px 0 10px;
       font-weight: 500;
       line-height: 1.2;
+    }
+    @media (max-width: 520px) {
+      .lg-category-heading { padding: 15px 16px; }
+      .lg-category-cards { grid-template-columns: 1fr; }
     }
     .lg-card p {
       font: 14px/1.7 Arial;
@@ -366,18 +400,43 @@
           throw new Error('Plant catalog is empty or has an invalid format.');
         }
         const grid = document.getElementById('catalog-grid');
-        grid.innerHTML = plants.map(p => `
-          <article class="lg-card">
-            <div class="lg-cardbody">
-              <span class="lg-kicker">${p.category}</span>
-              <h3>${p.name}</h3>
-              <p>${p.description}</p>
-              <div class="lg-card-foot">
-                <span>$${p.donation} Donation</span>
-                <a href="plant.html?id=${p.id}" class="btn" style="margin:0; padding: 8px 14px; font-size: 10px;">Care & Donate</a>
-              </div>
+        const categoryOrder = [
+          'Plants and Shrubs',
+          'Trees',
+          'Flower Vase — Assorted Flowers of the Day',
+          'Consultation'
+        ];
+        const categories = [...new Set([
+          ...categoryOrder,
+          ...plants.map(plant => plant.category).filter(Boolean)
+        ])];
+        const groupedPlants = categories
+          .map(category => ({
+            category,
+            plants: plants.filter(plant => plant.category === category)
+          }))
+          .filter(group => group.plants.length);
+        grid.innerHTML = groupedPlants.map(group => `
+          <section class="lg-catalog-group" aria-labelledby="category-${encodeURIComponent(group.category)}">
+            <div class="lg-category-heading">
+              <h3 id="category-${encodeURIComponent(group.category)}">${group.category}</h3>
+              <span class="lg-category-count">${group.plants.length} ${group.plants.length === 1 ? 'item' : 'items'}</span>
             </div>
-          </article>
+            <div class="lg-category-cards">
+              ${group.plants.map(p => `
+                <article class="lg-card">
+                  <div class="lg-cardbody">
+                    <h3>${p.name}</h3>
+                    <p>${p.description}</p>
+                    <div class="lg-card-foot">
+                      <span>$${p.donation} Donation</span>
+                      <a href="plant.html?id=${encodeURIComponent(p.id)}" class="btn" style="margin:0; padding: 8px 14px; font-size: 10px;">Care & Donate</a>
+                    </div>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
         `).join('');
       })
       .catch(error => {
