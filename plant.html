@@ -154,6 +154,39 @@
       font-size: 14px;
     }
     .plant-detail strong { color: var(--forest); }
+    .plant-offer {
+      margin: 0 0 22px;
+      padding: 18px;
+      border: 1px solid #c9d8c3;
+      border-radius: 14px;
+      background: #eef3ec;
+    }
+    .plant-offer > h2 {
+      margin-bottom: 8px;
+      color: var(--forest);
+      font: 500 21px/1.25 Georgia, serif;
+    }
+    .plant-offer-description {
+      margin-bottom: 14px;
+      color: #536258;
+      font-size: 14px;
+    }
+    .plant-offer .impact-box {
+      margin: 0 0 14px;
+      padding: 12px;
+      background: #fff;
+    }
+    .plant-offer .impact-box strong { font-size: 22px; }
+    .plant-offer .market-reference {
+      margin: 0;
+      padding: 12px 14px;
+      background: #f8f4ec;
+    }
+    .plant-photos-heading {
+      margin: 20px 0 0;
+      color: var(--forest);
+      font: 500 22px/1.25 Georgia, serif;
+    }
     .market-reference {
       margin: -4px 0 22px;
       padding: 14px 16px;
@@ -253,6 +286,9 @@
         <p>Next step</p>
         <h2 id="pickup-heading">Arrange pickup</h2>
       </div>
+      <div class="pickup-location" id="pickup-location" hidden>
+        <strong>Pickup</strong><br><span id="p-pickup"></span>
+      </div>
       <form id="donation-form" class="donation-form" method="post">
         <input type="hidden" name="visitorId" id="visitor-id">
         <input type="hidden" name="plantId" id="plant-id">
@@ -336,6 +372,7 @@
         const plant = plants.find(p => p.id === plantId) || plants[0];
         document.title = `${plant.name} — Care & Pickup`;
         const information = document.getElementById('plant-information');
+        let offerCard;
         let gallery;
         const imageViewer = document.getElementById('image-viewer');
         const imageViewerImage = document.getElementById('image-viewer-image');
@@ -404,9 +441,20 @@
               break;
             }
             case 'Symbolism & Meanings':
-            case 'What you get for your money':
               addDetail(key, value);
               break;
+            case 'What you get for your money': {
+              offerCard = document.createElement('section');
+              offerCard.className = 'plant-offer';
+              const heading = document.createElement('h2');
+              heading.textContent = key;
+              const description = document.createElement('p');
+              description.className = 'plant-offer-description';
+              description.textContent = value;
+              offerCard.append(heading, description);
+              information.appendChild(offerCard);
+              break;
+            }
             case 'donation': {
               const impact = document.createElement('div');
               impact.className = 'impact-box';
@@ -415,7 +463,7 @@
               const note = document.createElement('span');
               note.textContent = `100% of this $${value} gift supports Hunger at Home's food-relief work.`;
               impact.append(amount, note);
-              information.appendChild(impact);
+              (offerCard || information).appendChild(impact);
               break;
             }
             case 'marketReference': {
@@ -437,21 +485,29 @@
               link.rel = 'noopener noreferrer';
               link.textContent = 'See example listing';
               reference.append(heading, text, link);
-              information.appendChild(reference);
+              (offerCard || information).appendChild(reference);
               break;
             }
             case 'Care':
+              addDetail('Care', value);
+              break;
             case 'pickup':
-              addDetail(key === 'Care' ? 'Care' : 'Pickup', value);
+              document.getElementById('p-pickup').textContent = value;
+              document.getElementById('pickup-location').hidden = false;
               break;
             case 'pictures': {
+              const pictures = Array.isArray(value) ? value : Object.values(value || {});
+              const validPictures = pictures.filter(picture => typeof picture === 'string' && picture.trim());
+              if (!validPictures.length) break;
+              const photosHeading = document.createElement('h2');
+              photosHeading.className = 'plant-photos-heading';
+              photosHeading.textContent = 'Real photos from my garden';
+              information.appendChild(photosHeading);
               gallery = document.createElement('div');
               gallery.className = 'plant-gallery';
-              gallery.setAttribute('aria-label', 'Plant photos');
+              gallery.setAttribute('aria-label', 'Real photos from my garden');
               information.appendChild(gallery);
-              const pictures = Array.isArray(value) ? value : Object.values(value || {});
-              pictures
-                .filter(picture => typeof picture === 'string' && picture.trim())
+              validPictures
                 .forEach((picture, index) => {
                   const figure = document.createElement('figure');
                   const button = document.createElement('button');
@@ -466,7 +522,10 @@
                   button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
                   image.addEventListener('error', () => {
                     figure.remove();
-                    if (!gallery.children.length) gallery.remove();
+                    if (!gallery.children.length) {
+                      gallery.previousElementSibling?.remove();
+                      gallery.remove();
+                    }
                   });
                   button.appendChild(image);
                   figure.appendChild(button);
@@ -499,8 +558,9 @@
       })
       .catch(err => {
         console.error('Unable to load the plant details:', err);
-        document.getElementById('p-name').textContent = 'Plant unavailable';
+        information.textContent = 'Plant details are unavailable. Please refresh the page or contact the nursery.';
         saveDetailsButton.textContent = 'Plant details unavailable';
+        saveDetailsButton.disabled = true;
       });
   </script>
 </body>
