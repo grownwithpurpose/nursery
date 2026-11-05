@@ -145,6 +145,15 @@
     }
     h1 { font-family: Georgia, serif; font-size: 30px; line-height: 1.2; color: var(--forest); margin-bottom: 12px; }
     .desc { font-size: 15px; color: #536258; margin-bottom: 20px; }
+    .plant-detail {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f7f5ee;
+      color: #536258;
+      font-size: 14px;
+    }
+    .plant-detail strong { color: var(--forest); }
     .market-reference {
       margin: -4px 0 22px;
       padding: 14px 16px;
@@ -228,42 +237,22 @@
     <section class="page-section care-section" id="plant-card" aria-labelledby="care-heading">
       <div class="section-heading">
         <p>Plant details</p>
-        <h2 id="care-heading">Care information</h2>
+        <h2 id="care-heading">About this plant</h2>
       </div>
-      <div class="badge" id="p-category">Plant Category</div>
-      <h1 id="p-name">Loading Plant...</h1>
-      <p class="desc" id="p-desc"></p>
-      <aside class="market-reference" id="market-reference" aria-labelledby="market-reference-heading" hidden>
-        <h2 id="market-reference-heading">Similar options elsewhere</h2>
-        <p id="market-reference-text"></p>
-        <a id="market-reference-link" target="_blank" rel="noopener noreferrer">See example listing</a>
-      </aside>
-      <div id="plant-gallery" class="plant-gallery" aria-label="Plant photos" hidden></div>
+      <div id="plant-information"></div>
       <dialog class="image-viewer" id="image-viewer" aria-label="Enlarged plant photo">
         <button class="image-viewer-close" id="image-viewer-close" type="button" aria-label="Close enlarged photo">&times;</button>
         <button class="image-viewer-next" id="image-viewer-next" type="button" aria-label="Show next plant photo">
           <img id="image-viewer-image" alt="">
         </button>
       </dialog>
-
-      <div class="impact-box">
-        <strong id="p-donation">$0 Donation</strong>
-        <span id="p-impact">100% supports Hunger at Home's food-relief work</span>
-      </div>
-
-      <div class="specs">
-        <div class="spec-item"><span>Sun Needs</span><span id="p-sun">—</span></div>
-        <div class="spec-item"><span>Watering</span><span id="p-water">—</span></div>
-        <div class="spec-item"><span>Soil Type</span><span id="p-soil">—</span></div>
-      </div>
     </section>
 
     <section class="page-section pickup-section" aria-labelledby="pickup-heading">
       <div class="section-heading">
-        <p>Reserve this plant</p>
-        <h2 id="pickup-heading">Pickup information</h2>
+        <p>Next step</p>
+        <h2 id="pickup-heading">Arrange pickup</h2>
       </div>
-      <div class="pickup-location"><strong>Local pickup</strong><br><span id="p-pickup">San Jose, CA</span></div>
       <form id="donation-form" class="donation-form" method="post">
         <input type="hidden" name="visitorId" id="visitor-id">
         <input type="hidden" name="plantId" id="plant-id">
@@ -346,26 +335,14 @@
       .then(plants => {
         const plant = plants.find(p => p.id === plantId) || plants[0];
         document.title = `${plant.name} — Care & Pickup`;
-        document.getElementById('p-name').textContent = plant.name;
-        document.getElementById('p-category').textContent = plant.category;
-        document.getElementById('p-desc').textContent = plant.description;
-        const marketReference = plant.marketReference;
-        if (marketReference?.text && marketReference?.url) {
-          const marketUrl = new URL(marketReference.url, window.location.href);
-          if (marketUrl.protocol === 'https:' || marketUrl.protocol === 'http:') {
-            document.getElementById('market-reference-text').textContent = marketReference.text;
-            const marketLink = document.getElementById('market-reference-link');
-            marketLink.href = marketUrl.href;
-            document.getElementById('market-reference').hidden = false;
-          } else {
-            console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
-          }
-        }
-        const gallery = document.getElementById('plant-gallery');
+        const information = document.getElementById('plant-information');
+        let gallery;
         const imageViewer = document.getElementById('image-viewer');
         const imageViewerImage = document.getElementById('image-viewer-image');
         let viewerIndex = 0;
-        const getGalleryButtons = () => [...gallery.querySelectorAll('button[data-full-image]')];
+        const getGalleryButtons = () => gallery
+          ? [...gallery.querySelectorAll('button[data-full-image]')]
+          : [];
         const showViewerImage = index => {
           const photos = getGalleryButtons();
           if (!photos.length) return;
@@ -378,7 +355,7 @@
             `Show next plant photo (${viewerIndex + 1} of ${photos.length})`
           );
         };
-        gallery.addEventListener('click', event => {
+        information.addEventListener('click', event => {
           const trigger = event.target.closest('button[data-full-image]');
           if (!trigger) return;
           showViewerImage(getGalleryButtons().indexOf(trigger));
@@ -393,38 +370,120 @@
         imageViewer.addEventListener('click', event => {
           if (event.target === imageViewer) imageViewer.close();
         });
-        const pictures = Array.isArray(plant.pictures)
-          ? plant.pictures
-          : Object.values(plant.pictures || {});
-        pictures
-          .filter(picture => typeof picture === 'string' && picture.trim())
-          .forEach((picture, index) => {
-            const figure = document.createElement('figure');
-            const button = document.createElement('button');
-            const image = document.createElement('img');
-            image.src = picture;
-            image.alt = `${plant.name} — photo ${index + 1}`;
-            image.loading = 'lazy';
-            image.decoding = 'async';
-            button.type = 'button';
-            button.dataset.fullImage = picture;
-            button.dataset.imageAlt = image.alt;
-            button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
-            image.addEventListener('error', () => {
-              figure.remove();
-              if (!gallery.children.length) gallery.hidden = true;
-            });
-            button.appendChild(image);
-            figure.appendChild(button);
-            gallery.appendChild(figure);
-          });
-        gallery.hidden = gallery.children.length === 0;
-        document.getElementById('p-donation').textContent = `$${plant.donation} Donation`;
-        document.getElementById('p-impact').textContent = `100% of this $${plant.donation} gift supports Hunger at Home's food-relief work.`;
-        document.getElementById('p-sun').textContent = plant.sun;
-        document.getElementById('p-water').textContent = plant.water;
-        document.getElementById('p-soil').textContent = plant.soil;
-        document.getElementById('p-pickup').textContent = plant.pickup;
+        const addDetail = (label, value) => {
+          if (value === undefined || value === null || value === '') return;
+          const detail = document.createElement('p');
+          detail.className = 'plant-detail';
+          const heading = document.createElement('strong');
+          heading.textContent = `${label}: `;
+          detail.append(heading, document.createTextNode(String(value)));
+          information.appendChild(detail);
+        };
+        Object.entries(plant).forEach(([key, value]) => {
+          switch (key) {
+            case 'category': {
+              const category = document.createElement('div');
+              category.className = 'badge';
+              category.textContent = value;
+              information.appendChild(category);
+              break;
+            }
+            case 'id':
+              break;
+            case 'name': {
+              const name = document.createElement('h1');
+              name.textContent = value;
+              information.appendChild(name);
+              break;
+            }
+            case 'description': {
+              const description = document.createElement('p');
+              description.className = 'desc';
+              description.textContent = value;
+              information.appendChild(description);
+              break;
+            }
+            case 'Symbolism & Meanings':
+            case 'What you get for your money':
+              addDetail(key, value);
+              break;
+            case 'donation': {
+              const impact = document.createElement('div');
+              impact.className = 'impact-box';
+              const amount = document.createElement('strong');
+              amount.textContent = `$${value} Donation`;
+              const note = document.createElement('span');
+              note.textContent = `100% of this $${value} gift supports Hunger at Home's food-relief work.`;
+              impact.append(amount, note);
+              information.appendChild(impact);
+              break;
+            }
+            case 'marketReference': {
+              if (!value?.text || !value?.url) break;
+              const marketUrl = new URL(value.url, window.location.href);
+              if (marketUrl.protocol !== 'https:' && marketUrl.protocol !== 'http:') {
+                console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
+                break;
+              }
+              const reference = document.createElement('aside');
+              reference.className = 'market-reference';
+              const heading = document.createElement('h2');
+              heading.textContent = 'Similar options elsewhere';
+              const text = document.createElement('p');
+              text.textContent = value.text;
+              const link = document.createElement('a');
+              link.href = marketUrl.href;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.textContent = 'See example listing';
+              reference.append(heading, text, link);
+              information.appendChild(reference);
+              break;
+            }
+            case 'Care':
+            case 'pickup':
+              addDetail(key === 'Care' ? 'Care' : 'Pickup', value);
+              break;
+            case 'pictures': {
+              gallery = document.createElement('div');
+              gallery.className = 'plant-gallery';
+              gallery.setAttribute('aria-label', 'Plant photos');
+              information.appendChild(gallery);
+              const pictures = Array.isArray(value) ? value : Object.values(value || {});
+              pictures
+                .filter(picture => typeof picture === 'string' && picture.trim())
+                .forEach((picture, index) => {
+                  const figure = document.createElement('figure');
+                  const button = document.createElement('button');
+                  const image = document.createElement('img');
+                  image.src = picture;
+                  image.alt = `${plant.name} — photo ${index + 1}`;
+                  image.loading = 'lazy';
+                  image.decoding = 'async';
+                  button.type = 'button';
+                  button.dataset.fullImage = picture;
+                  button.dataset.imageAlt = image.alt;
+                  button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
+                  image.addEventListener('error', () => {
+                    figure.remove();
+                    if (!gallery.children.length) gallery.remove();
+                  });
+                  button.appendChild(image);
+                  figure.appendChild(button);
+                  gallery.appendChild(figure);
+                });
+              if (!gallery.children.length) gallery.remove();
+              break;
+            }
+            case 'size':
+              addDetail('Size', value);
+              break;
+            default:
+              if (typeof value === 'string' || typeof value === 'number') {
+                addDetail(key, value);
+              }
+          }
+        });
         document.getElementById('plant-id').value = plant.id;
         saveDetailsButton.textContent = 'Save details & continue';
 

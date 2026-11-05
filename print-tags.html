@@ -143,9 +143,8 @@
               <div class="nursery-title">The Little Garden Nursery · San Jose</div>
               <h2 class="plant-name">${plant.name}</h2>
               <div class="care-notes">
-                <strong>Sun:</strong> ${plant.sun}<br>
-                <strong>Water:</strong> ${plant.water}<br>
-                <strong>Soil:</strong> ${plant.soil}
+                ${plant.Care ? `<strong>Care:</strong> ${plant.Care}` : ''}
+                ${plant['Symbolism & Meanings'] ? `<br><strong>Symbolism:</strong> ${plant['Symbolism & Meanings']}` : ''}
               </div>
             </div>
             <div class="bottom-row">
