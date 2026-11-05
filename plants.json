@@ -72,9 +72,9 @@
     "category": "Flower Vase — Assorted Flowers of the Day",
     "id": "Small-Flower-Vase",
     "name": "Assorted Flowers of the Day",
-    "description": "A seasonal arrangement of assorted flowers picked from the garden.",
-    "donation": 40,
-    "mealsProvided": 80,
+    "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
+    "donation": 20,
+    "mealsProvided": 40,
     "Care": "",
     "pickup": "San Jose, CA · By arrangement",
     "pictures": {
@@ -83,6 +83,21 @@
       "3": "pictures/Small-FlowerVase-3.jpg"
     },
     "size": "6 inch"
+  },
+    {
+    "category": "Flower Vase — Assorted Flowers of the Day",
+    "id": "Medium-Flower-Vase",
+    "name": "Mediumn Assorted Flowers of the Day",
+    "description": "A medium size seasonal arrangement of assorted flowers picked from the garden.",
+    "donation": 40,
+    "mealsProvided": 80,
+    "Care": "",
+    "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "pictures/Medium-Vase-1.jpg",
+      "2": "pictures/Medium-FlowerVase-1.png"
+    },
+    "size": "12 inch"
   },
   {
     "category": "Consultation",
