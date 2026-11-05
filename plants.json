@@ -1,53 +1,53 @@
 [
   {
+    "category": "Trees",
     "id": "crepe-myrtle",
     "name": "Tuscarora Crepe Myrtle",
-    "category": "Trees",
-    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
     "donation": 30,
     "mealsProvided": 60,
+    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "pickup": "San Jose, CA · By arrangement",
     "sun": "Full Sun",
     "water": "Low to moderate once rooted",
-    "soil": "Adaptable to clay soils",
-    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
-    "pickup": "San Jose, CA · By arrangement"
+    "soil": "Adaptable to clay soils"
   },
   {
+    "category": "Trees",
     "id": "avacado",
     "name": "Avacado",
-    "category": "Trees",
-    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
     "donation": 30,
     "mealsProvided": 60,
-    "sun": "Full Sun",
-    "water": "Low to moderate once rooted",
-    "soil": "Adaptable to clay soils",
-    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
+    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
     "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "pictures/Avacado-Tree-1.jpg"
-    }
+    },
+    "sun": "Full Sun",
+    "water": "Low to moderate once rooted",
+    "soil": "Adaptable to clay soils"
   },
   {
+    "category": "Plants and Shrubs",
     "id": "yellow-rose",
     "name": "Yellow Rose",
-    "category": "Plants and Shrubs",
-    "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "donation": 15,
     "mealsProvided": 30,
-    "sun": "Full Sun",
-    "water": "Deep watering 1-2 times weekly",
-    "soil": "Rich composted organic soil",
-    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
     "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "pictures/HappyGoLucky.jpg",
+      "2": "pictures/HappyGoLucky-Grandiflora.jpg"
+    },
     "marketReference": {
       "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
       "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
     },
-    "pictures": {
-      "1": "pictures/HappyGoLucky.jpg",
-      "2": "pictures/HappyGoLucky-Grandiflora.jpg"
-    }
+    "sun": "Full Sun",
+    "water": "Deep watering 1-2 times weekly",
+    "soil": "Rich composted organic soil"
   },
   {
     "category": "Plants and Shrubs",
@@ -69,15 +69,29 @@
     }
   },
   {
+    "category": "Flower Vase — Assorted Flowers of the Day",
     "id": "Small-Flower-Vase",
     "name": "Assorted Flowers of the Day",
-    "size": "6 inch",
-    "category": "Flower Vase — Assorted Flowers of the Day",
-    "Care": "",
+    "description": "A seasonal arrangement of assorted flowers picked from the garden.",
     "donation": 40,
     "mealsProvided": 80,
-    "description": "A seasonal arrangement of assorted flowers picked from the garden.",
+    "Care": "",
     "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "pictures/Small-FlowerVase-1.jpg",
+      "2": "pictures/Small-FlowerVase-2.jpg",
+      "3": "pictures/Small-FlowerVase-3.jpg"
+    },
+    "size": "6 inch"
+  },
+  {
+    "category": "Consultation",
+    "id": "plant-consultation-60-min",
+    "name": "1 hour plant consultation",
+    "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a connsultation. Donate if you find the advice helpful",
+    "donation": 40,
+    "mealsProvided": 80,
+    "Care": "",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
@@ -85,18 +99,17 @@
     }
   },
   {
-    "id": "Plant consulting",
-    "name": "Plant Consultation",
     "category": "Consultation",
-    "Care": "",
-    "donation": 40,
-    "mealsProvided": 80,
+    "id": "plant-consultation-30-min",
+    "name": "30 min plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a connsultation. Donate if you find the advice helpful",
+    "donation":20,
+    "mealsProvided": 40,
+    "Care": "",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
       "3": "pictures/Small-FlowerVase-3.jpg"
     }
   }
-
 ]

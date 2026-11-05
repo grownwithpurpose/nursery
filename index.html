@@ -173,7 +173,13 @@
       display: grid;
       gap: 32px;
     }
-    .lg-catalog-group { min-width: 0; padding: 0; }
+    .lg-catalog-group {
+      min-width: 0;
+      padding: 0 0 30px;
+      scroll-margin-top: 24px;
+      border-bottom: 1px solid #dedfd3;
+    }
+    .lg-catalog-group:last-child { border-bottom: 0; }
     .lg-category-heading {
       display: flex;
       justify-content: space-between;
@@ -212,7 +218,8 @@
     }
     .lg-card {
       background: white;
-      border: 1px solid #e6e3d9;
+      border: 1px solid #e1e4da;
+      border-top: 3px solid #9baa88;
       border-radius: 14px;
       overflow: hidden;
       display: flex;
@@ -332,7 +339,7 @@
             <div class="lg-brand">The Little Garden Nursery<small>San Jose · California</small>
             </div>
             <div class="lg-links">
-                <a href="#plants">Plants</a>
+                <a href="#plants">Plant Catalog</a>
                 <a href="#purpose">Our Purpose</a>
                 <a href="print-tags.html" target="_blank">Print Stakes</a>
                 <a href="#contact">Contact</a>
@@ -344,7 +351,7 @@
                 <h1>Growing plants.<br>Growing possibilities.</h1>
                 <p>Thoughtfully grown plants in San Jose. 100% of plant sale proceeds go directly to feed neighbors in need through <strong>Hunger at Home</strong> a local 501(c)(3) nonprofit working to build food security across Silicon Valley..</p>
                 <div>
-                    <a class="btn" href="#plants">Browse Collection</a>
+                    <a class="btn" href="#plants">Plant Catalog</a>
                     <a class="btn btn-outline" href="#purpose">Our Impact</a>
                 </div>
                 <div class="lg-tagline"><span><strong>Every plant sold.</strong><br>Every dollar given.</span></div>
@@ -377,7 +384,7 @@
         <section id="plants" style="background: #fbfaf6;">
             <div class="lg-heading">
                 <div class="lg-kicker">From Our Garden</div>
-                <h2>Find a plant to love</h2>
+                <h2>Plant Catalog</h2>
                 <p>Browse our seasonal inventory. Scan a plant's physical tag at pickup to view its full care requirements and give your donation directly.</p>
             </div>
             <div class="lg-cards" id="catalog-grid" aria-live="polite">
@@ -417,7 +424,7 @@
           }))
           .filter(group => group.plants.length);
         grid.innerHTML = groupedPlants.map(group => `
-          <section class="lg-catalog-group" aria-labelledby="category-${encodeURIComponent(group.category)}">
+          <div class="lg-catalog-group" aria-labelledby="category-${encodeURIComponent(group.category)}">
             <div class="lg-category-heading">
               <h3 id="category-${encodeURIComponent(group.category)}">${group.category}</h3>
               <span class="lg-category-count">${group.plants.length} ${group.plants.length === 1 ? 'item' : 'items'}</span>
@@ -436,7 +443,7 @@
                 </article>
               `).join('')}
             </div>
-          </section>
+          </div>
         `).join('');
       })
       .catch(error => {
