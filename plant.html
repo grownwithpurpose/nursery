@@ -48,6 +48,25 @@
       font: 500 24px/1.2 Georgia, serif;
     }
     .pickup-section .section-heading h2 { font-size: 26px; }
+    .plant-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 18px 0 22px;
+    }
+    .plant-gallery[hidden] { display: none; }
+    .plant-gallery figure {
+      overflow: hidden;
+      border: 1px solid #e7e4d8;
+      border-radius: 10px;
+      background: #f7f5ee;
+      aspect-ratio: 1;
+    }
+    .plant-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     .pickup-location {
       padding: 12px 14px;
       border: 1px solid #d5dfd1;
@@ -67,6 +86,21 @@
     }
     h1 { font-family: Georgia, serif; font-size: 30px; line-height: 1.2; color: var(--forest); margin-bottom: 12px; }
     .desc { font-size: 15px; color: #536258; margin-bottom: 20px; }
+    .market-reference {
+      margin: -4px 0 22px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--clay);
+      border-radius: 0 10px 10px 0;
+      background: #f8f4ec;
+      font-size: 13px;
+    }
+    .market-reference[hidden] { display: none; }
+    .market-reference h2 {
+      margin-bottom: 4px;
+      color: var(--forest);
+      font: 600 14px/1.35 Arial, sans-serif;
+    }
+    .market-reference a { color: var(--forest); font-weight: 600; }
     .impact-box {
       background: #eef3ec;
       border: 1px solid #c9d8c3;
@@ -140,6 +174,12 @@
       <div class="badge" id="p-category">Plant Category</div>
       <h1 id="p-name">Loading Plant...</h1>
       <p class="desc" id="p-desc"></p>
+      <aside class="market-reference" id="market-reference" aria-labelledby="market-reference-heading" hidden>
+        <h2 id="market-reference-heading">Similar options elsewhere</h2>
+        <p id="market-reference-text"></p>
+        <a id="market-reference-link" target="_blank" rel="noopener noreferrer">See example listing</a>
+      </aside>
+      <div id="plant-gallery" class="plant-gallery" aria-label="Plant photos" hidden></div>
 
       <div class="impact-box">
         <strong id="p-donation">$0 Donation</strong>
@@ -244,6 +284,39 @@
         document.getElementById('p-name').textContent = plant.name;
         document.getElementById('p-category').textContent = plant.category;
         document.getElementById('p-desc').textContent = plant.description;
+        const marketReference = plant.marketReference;
+        if (marketReference?.text && marketReference?.url) {
+          const marketUrl = new URL(marketReference.url, window.location.href);
+          if (marketUrl.protocol === 'https:' || marketUrl.protocol === 'http:') {
+            document.getElementById('market-reference-text').textContent = marketReference.text;
+            const marketLink = document.getElementById('market-reference-link');
+            marketLink.href = marketUrl.href;
+            document.getElementById('market-reference').hidden = false;
+          } else {
+            console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
+          }
+        }
+        const gallery = document.getElementById('plant-gallery');
+        const pictures = Array.isArray(plant.pictures)
+          ? plant.pictures
+          : Object.values(plant.pictures || {});
+        pictures
+          .filter(picture => typeof picture === 'string' && picture.trim())
+          .forEach((picture, index) => {
+            const figure = document.createElement('figure');
+            const image = document.createElement('img');
+            image.src = picture;
+            image.alt = `${plant.name} — photo ${index + 1}`;
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            image.addEventListener('error', () => {
+              figure.remove();
+              if (!gallery.children.length) gallery.hidden = true;
+            });
+            figure.appendChild(image);
+            gallery.appendChild(figure);
+          });
+        gallery.hidden = gallery.children.length === 0;
         document.getElementById('p-donation').textContent = `$${plant.donation} Donation`;
         document.getElementById('p-impact').textContent = `100% of this $${plant.donation} gift supports food relief via Hunger at Home (~${plant.mealsProvided} nutritious meals).`;
         document.getElementById('p-sun').textContent = plant.sun;

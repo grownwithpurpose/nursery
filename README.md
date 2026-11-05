@@ -37,3 +37,11 @@ The contact details are sent only to the nursery's Google Sheet; they are not fo
 7. Test a submission using non-sensitive test details and verify the row appears in the **Donations** tab. Confirm that only after the row is recorded does the response page display **Donate & Arrange Pickup** at the bottom. Remove the test row afterward.
 
 The generated Visitor ID distinguishes a browser-tab session, not a verified person. Phone and email are optional; the donor's name and consent are required. Tell visitors these details are stored in the nursery's Sheet for pickup coordination, restrict Sheet access to people who need it, and delete records when they are no longer needed. Existing Google Forms created by the previous setup are not used by this flow; stop accepting responses or remove those forms separately in your Google account if desired. No credentials or private Sheet IDs belong in this repository.
+
+### Adding plant photos
+
+Add image filenames to a plant's `pictures` property in `plants.json`; it may be an array or an object whose values are image paths. The plant detail page displays every listed image in a responsive gallery. Upload or copy the image files into the `pictures/` directory, then use paths relative to `plant.html` such as `pictures/yellow-rose-1.jpg`. Publish both the JSON and image files. Missing or unreadable images are omitted from the gallery.
+
+### Adding market comparisons
+
+For a plant with a relevant market example, add a `marketReference` object in `plants.json` with `text` and `url` fields. The plant page displays it as “Similar options elsewhere” with a link to the example listing; plants without this data omit the comparison.

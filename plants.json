@@ -1,44 +1,5 @@
 [
   {
-    "id": "black-mission-fig",
-    "name": "Black Mission Fig",
-    "category": "Fruit trees",
-    "Care": "Full sun, moderate water, well-drained soil",
-    "donation": 35,
-    "mealsProvided": 70,
-    "sun": "Full Sun (6+ hrs)",
-    "water": "Moderate / Drought tolerant once established",
-    "soil": "Well-drained loam",
-    "description": "Sweet, dark purple figs with rich strawberry-colored flesh. Thrives in San Jose backyards.",
-    "pickup": "San Jose, CA · By arrangement"
-  },
-  {
-    "id": "meyer-lemon",
-    "name": "Improved Meyer Lemon",
-    "category": "Fruit trees",
-    "Care": "Full sun, keep evenly moist, citrus & succulent potting mix",
-    "donation": 40,
-    "mealsProvided": 80,
-    "sun": "Full Sun (8 hrs)",
-    "water": "Keep evenly moist, avoid soggy roots",
-    "soil": "Citrus & succulent potting mix",
-    "description": "Sweet, thin-skinned culinary lemon that produces fragrant blooms and juicy fruit year-round.",
-    "pickup": "San Jose, CA · By arrangement"
-  },
-  {
-    "id": "heritage-rose",
-    "name": "Climbing Heritage Rose",
-    "category": "Flowering plants",
-    "Care": "Full sun to light afternoon shade, deep watering 1-2 times weekly, rich composted organic soil",
-    "donation": 25,
-    "mealsProvided": 50,
-    "sun": "Full Sun to Light Afternoon Shade",
-    "water": "Deep watering 1-2 times weekly",
-    "soil": "Rich composted organic soil",
-    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
-    "pickup": "San Jose, CA · By arrangement"
-  },
-  {
     "id": "crepe-myrtle",
     "name": "Tuscarora Crepe Myrtle",
     "category": "Flowering plants",
@@ -52,17 +13,20 @@
     "pickup": "San Jose, CA · By arrangement"
   },
   {
-    "id": "jade-plant",
-    "name": "Sunset Jade Succulent",
-    "category": "Garden favorites",
-    "Care": "Bright indirect light or direct morning sun, low water (soak and dry completely), fast-draining cactus mix",
-    "donation": 15,
-    "mealsProvided": 30,
-    "sun": "Bright indirect light or direct morning sun",
-    "water": "Low (soak and dry completely)",
-    "soil": "Fast-draining cactus mix",
-    "description": "Hardy succulent featuring golden-yellow and crimson leaf margins.",
-    "pickup": "San Jose, CA · By arrangement"
+    "id": "avacado",
+    "name": "Avacado",
+    "category": "Flowering plants",
+    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "donation": 30,
+    "mealsProvided": 60,
+    "sun": "Full Sun",
+    "water": "Low to moderate once rooted",
+    "soil": "Adaptable to clay soils",
+    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
+    "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "pictures/Avacado-Tree-1.jpg"
+    }
   },
   {
     "id": "yellow-rose",
@@ -76,10 +40,70 @@
     "soil": "Rich composted organic soil",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "pickup": "San Jose, CA · By arrangement",
+    "marketReference": {
+      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
+      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
+    },
     "pictures": {
-      "1": "yellow-rose-1.jpg",
-      "2": "yellow-rose-2.jpg",
-      "3": "yellow-rose-3.jpg"
+      "1": "pictures/HappyGoLucky.jpg",
+      "2": "pictures/HappyGoLucky-Grandiflora.jpg"
+    }
+  },
+  {
+    "id": "pink-rose-vine",
+    "name": "Ceceille Brunner Rose Vine",
+    "size": "25 gallon",
+    "category": "Flowering plants",
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
+    "donation": 40,
+    "mealsProvided": 80,
+    "sun": "Full Sun",
+    "water": "Deep watering 1-2 times weekly",
+    "soil": "Rich composted organic soil",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "pickup": "San Jose, CA · By arrangement",
+    "marketReference": {
+      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
+      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
+    },
+    "pictures": {
+      "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
+      "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
+    }
+  },
+  {
+    "id": "Small-Flower-Vase",
+    "name": "Small-Flower-Vase",
+    "size": "6 inch",
+    "category": "Assorted Flowers of the day from the garden",
+    "Care": "",
+    "donation": 40,
+    "mealsProvided": 80,
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "pickup": "San Jose, CA · By arrangement",
+    "marketReference": {
+      "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
+      "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
+    },
+    "pictures": {
+      "1": "pictures/Small-FlowerVase-1.jpg",
+      "2": "pictures/Small-FlowerVase-2.jpg",
+      "3": "pictures/Small-FlowerVase-3.jpg"
+    }
+  },
+  {
+    "id": "Plant consulting",
+    "name": "Plant consulting",
+    "category": "Consultation. Any problems with your plants?",
+    "Care": "",
+    "donation": 40,
+    "mealsProvided": 80,
+    "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a connsultation. Donate if you find the advice helpful",
+    "pictures": {
+      "1": "pictures/Small-FlowerVase-1.jpg",
+      "2": "pictures/Small-FlowerVase-2.jpg",
+      "3": "pictures/Small-FlowerVase-3.jpg"
     }
   }
+
 ]
