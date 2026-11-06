@@ -38,6 +38,20 @@ The contact details are sent only to the nursery's Google Sheet; they are not fo
 
 The generated Visitor ID distinguishes a browser-tab session, not a verified person. Phone and email are optional; the donor's name and consent are required. Tell visitors these details are stored in the nursery's Sheet for pickup coordination, restrict Sheet access to people who need it, and delete records when they are no longer needed. Existing Google Forms created by the previous setup are not used by this flow; stop accepting responses or remove those forms separately in your Google account if desired. No credentials or private Sheet IDs belong in this repository.
 
+## Website analytics
+
+The site includes the Google Tag Manager container `GTM-TRGRJS7Z`. Its script loads only after a visitor chooses **Accept analytics**. Visitors can reject analytics or change their choice later using **Privacy settings**. Rejecting after acceptance revokes analytics consent and reloads the page so the container is no longer active.
+
+To collect GA4 reports, configure a Google tag and GA4 event tags in the GTM account for this container. The site pushes these custom events to the data layer after consent:
+
+- `view_plant_catalog`
+- `view_plant_category` (with category name)
+- `view_plant_detail` (with plant ID)
+- `enlarge_plant_photo` (with plant ID and photo index)
+- `pickup_details_submit_attempt` (with plant ID; this is not proof of a successful save or donation)
+
+Page views require a Google tag configured in GTM. Custom events require corresponding GA4 Event tags and Custom Event triggers in GTM. The site does not send names, phone numbers, email addresses, form contents, or the pickup form's Visitor ID to analytics. Review tags configured in GTM before publishing; the container can run any tags enabled in that account.
+
 ### Adding plant photos
 
 Add image filenames to a plant's `pictures` property in `plants.json`; it may be an array or an object whose values are image paths. The plant detail page displays every listed image in a responsive gallery. Upload or copy the image files into the `pictures/` directory, then use paths relative to `plant.html` such as `pictures/yellow-rose-1.jpg`. Publish both the JSON and image files. Missing or unreadable images are omitted from the gallery.

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>The Little Garden Nursery · San Jose, CA</title>
+        <link rel="stylesheet" href="analytics-consent.css">
         <style>
     :root {
       --forest: #244638;
@@ -445,6 +446,19 @@
             </div>
           </div>
         `).join('');
+        window.trackNurseryEvent?.('view_plant_catalog');
+        if ('IntersectionObserver' in window) {
+          const categoryObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting) return;
+              window.trackNurseryEvent?.('view_plant_category', {
+                category: entry.target.querySelector('.lg-category-heading h3')?.textContent || ''
+              });
+              categoryObserver.unobserve(entry.target);
+            });
+          }, { threshold: 0.25 });
+          grid.querySelectorAll('.lg-catalog-group').forEach(group => categoryObserver.observe(group));
+        }
       })
       .catch(error => {
         console.error('Unable to load the plant catalog:', error);
@@ -453,5 +467,6 @@
         grid.classList.add('catalog-status');
       });
   </script>
+  <script src="analytics-consent.js"></script>
     </body>
 </html>

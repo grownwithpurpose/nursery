@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plant Care & Donation — The Little Garden Nursery</title>
+  <link rel="stylesheet" href="analytics-consent.css">
   <style>
     :root {
       --forest: #244638;
@@ -360,6 +361,9 @@
       }
 
       donationForm.action = DONATION_TRACKER_URL;
+      window.trackNurseryEvent?.('pickup_details_submit_attempt', {
+        plant_id: document.getElementById('plant-id').value
+      });
       saveDetailsButton.disabled = true;
       saveDetailsButton.textContent = 'Saving details…';
       formError.hidden = true;
@@ -373,6 +377,7 @@
       .then(plants => {
         const plant = plants.find(p => p.id === plantId) || plants[0];
         document.title = `${plant.name} — Care & Pickup`;
+        window.trackNurseryEvent?.('view_plant_detail', { plant_id: plant.id });
         const information = document.getElementById('plant-information');
         const imageViewer = document.getElementById('image-viewer');
         const imageViewerImage = document.getElementById('image-viewer-image');
@@ -393,7 +398,12 @@
         information.addEventListener('click', event => {
           const trigger = event.target.closest('button[data-full-image]');
           if (!trigger) return;
-          showViewerImage(getGalleryButtons().indexOf(trigger));
+          const photoIndex = getGalleryButtons().indexOf(trigger);
+          window.trackNurseryEvent?.('enlarge_plant_photo', {
+            plant_id: plant.id,
+            photo_index: photoIndex + 1
+          });
+          showViewerImage(photoIndex);
           imageViewer.showModal();
         });
         document.getElementById('image-viewer-next').addEventListener('click', () => {
@@ -583,5 +593,6 @@
         saveDetailsButton.disabled = true;
       });
   </script>
+  <script src="analytics-consent.js"></script>
 </body>
 </html>

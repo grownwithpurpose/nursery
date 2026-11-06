@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Little Garden Nursery · San Jose, CA</title>
+  <style>
+    :root {
+      --forest: #244638;
+      --sage: #9baa88;
+      --cream: #f7f5ee;
+      --clay: #b97859;
+      --ink: #29372f;
+      --muted: #66736a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; color: var(--ink); background: var(--cream); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    
+    .lg-nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 5%; background: #fbfaf6; border-bottom: 1px solid #e6e3d9; }
+    .lg-brand { font-size: 21px; color: var(--forest); font-weight: bold; }
+    .lg-brand small { display: block; font: 10px Arial; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .lg-links { display: flex; gap: 20px; font: 11px Arial; letter-spacing: 1.5px; text-transform: uppercase; }
+    
+    .lg-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 440px; background: #e9eee5; }
+    .lg-copy { padding: 60px 8%; display: flex; flex-direction: column; justify-content: center; }
+    .lg-kicker { font: bold 11px Arial; letter-spacing: 2.5px; text-transform: uppercase; color: var(--clay); }
+    h1 { font-size: clamp(38px, 5vw, 64px); line-height: 1.05; color: var(--forest); margin: 18px 0; }
+    .lg-copy p { font: 16px/1.8 Arial; color: #536258; max-width: 480px; }
+    
+    .btn { display: inline-block; background: var(--forest); color: white; padding: 13px 22px; font: 11px Arial; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 14px; border-radius: 4px; }
+    .btn-outline { background: transparent; color: var(--forest); border: 1px solid var(--forest); margin-left: 8px; }
+    
+    .lg-art { min-height: 350px; background: linear-gradient(135deg, #b9c9ad, #e9e5d6); display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+    .lg-stamp { background: var(--cream); padding: 20px 24px; color: var(--forest); font-style: italic; font-size: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+    
+    section { padding: 68px 7%; }
+    .lg-heading { text-align: center; max-width: 670px; margin: 0 auto 36px; }
+    .lg-heading h2 { font-size: 36px; color: var(--forest); margin: 10px 0; font-weight: normal; }
+    .lg-heading p { font: 14px/1.8 Arial; color: var(--muted); }
+    
+    .lg-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .lg-card { background: white; border: 1px solid #e6e3d9; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+    .lg-cardbody { padding: 24px; }
+    .lg-card h3 { font-size: 22px; color: var(--forest); margin-bottom: 8px; font-weight: normal; }
+    .lg-card p { font: 13px/1.7 Arial; color: var(--muted); margin-bottom: 16px; }
+    .lg-card-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0ede3; padding-top: 14px; font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: var(--forest); }
+    
+    .lg-mission { background: var(--forest); color: white; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; }
+    .lg-mission h2 { color: #f7f5ee; font-size: 38px; margin: 12px 0; font-weight: normal; }
+    .lg-mission p { color: #dce5d9; font: 14px/1.8 Arial; margin-bottom: 12px; }
+    .lg-mission .btn { background: var(--cream); color: var(--forest); }
+    .lg-promise { border: 1px solid #829888; padding: 32px; text-align: center; border-radius: 8px; }
+    .lg-promise strong { display: block; font-size: 58px; color: #e8c0a6; font-weight: normal; }
+    .lg-promise span { font: 11px/1.7 Arial; letter-spacing: 1.5px; text-transform: uppercase; color: #f7f5ee; }
+    
+    .lg-footer { padding: 25px 7%; background: #1c382b; color: #e7ede4; font: 11px Arial; letter-spacing: 1px; text-align: center; }
+    
+    @media(max-width: 768px) {
+      .lg-hero, .lg-mission { grid-template-columns: 1fr; }
+      .lg-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="lg-nav">
+    <div class="lg-brand">The Little Garden Nursery<small>San Jose · California</small></div>
+    <div class="lg-links">
+      <a href="#plants">Plants</a>
+      <a href="#purpose">Our Purpose</a>
+      <a href="print-tags.html" target="_blank">Print Stakes</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <div class="lg-hero">
+    <div class="lg-copy">
+      <div class="lg-kicker">A little nursery with a bigger purpose</div>
+      <h1>Growing plants.<br>Growing possibilities.</h1>
+      <p>Thoughtfully grown plants in San Jose. 100% of plant sale proceeds go directly to feed neighbors in need through <strong>Hunger at Home</strong>.</p>
+      <div>
+        <a class="btn" href="#plants">Browse Collection</a>
+        <a class="btn btn-outline" href="#purpose">Our Impact</a>
+      </div>
+    </div>
+  </div>
+
+  <section style="background: #f4f0e6;">
+    <div class="lg-heading">
+      <div class="lg-kicker">Every Plant Sold, Every Dollar Given</div>
+      <h2>Planting hope, one sale at a time</h2>
+    </div>
+  </section>
+
+  <section class="lg-mission" id="purpose">
+    <div>
+      <div class="lg-kicker" style="color: #dfad91;">Our Giving Promise</div>
+      <h2>Supporting Hunger at Home in San Jose</h2>
+      <p>100% of plant sale proceeds are donated to <strong>Hunger at Home</strong>, a local 501(c)(3) nonprofit working to build food security across Silicon Valley.</p>
+      <p>Hunger at Home recovers surplus food from local businesses and works with nonprofit partners to distribute meals to people facing food insecurity. The organization reports 14.4 million meals distributed through its food rescue work and partners.</p>
+      <p>The garden's operating costs are covered personally, so plant sale proceeds go directly to hunger relief.</p>
+      <a class="btn" href="https://hungerathome.org/about-us/" target="_blank" rel="noopener noreferrer">Learn about Hunger at Home</a>
+    </div>
+    <div class="lg-promise">
+      <strong>100%</strong>
+      <span>of plant sale proceeds donated to Hunger at Home</span>
+    </div>
+  </section>
+
+  <section id="plants" style="background: #fbfaf6;">
+    <div class="lg-heading">
+      <div class="lg-kicker">From Our Garden</div>
+      <h2>Find a plant to love</h2>
+      <p>Browse our seasonal inventory. Scan a plant's physical tag at pickup to view its full care requirements and give your donation directly.</p>
+    </div>
+    <div class="lg-cards" id="catalog-grid">
+      <!-- Injected from plants.json -->
+    </div>
+  </section>
+
+  <div class="lg-footer">
+    THE LITTLE GARDEN NURSERY  ·  SAN JOSE, CALIFORNIA  ·  GROWN WITH PURPOSE
+  </div>
+
+  <script>
+    fetch('plants.json')
+      .then(res => res.json())
+      .then(plants => {
+        const grid = document.getElementById('catalog-grid');
+        grid.innerHTML = plants.map(p => `
+          <article class="lg-card">
+            <div class="lg-cardbody">
+              <span class="lg-kicker">${p.category}</span>
+              <h3>${p.name}</h3>
+              <p>${p.description}</p>
+              <div class="lg-card-foot">
+                <span>$${p.donation} Donation</span>
+                <a href="plant.html?id=${p.id}" class="btn" style="margin:0; padding: 8px 14px; font-size: 10px;">Care & Donate</a>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      });
+  </script>
+</body>
+</html>
