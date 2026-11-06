@@ -161,6 +161,7 @@
       border-radius: 14px;
       background: #eef3ec;
     }
+    .plant-offer p { color: #536258; font-size: 14px; }
     .plant-offer > h2 {
       margin-bottom: 8px;
       color: var(--forest);
@@ -182,6 +183,7 @@
       padding: 12px 14px;
       background: #f8f4ec;
     }
+    .plant-offer .plant-gallery { margin-bottom: 0; }
     .plant-photos-heading {
       margin: 20px 0 0;
       color: var(--forest);
@@ -372,14 +374,10 @@
         const plant = plants.find(p => p.id === plantId) || plants[0];
         document.title = `${plant.name} — Care & Pickup`;
         const information = document.getElementById('plant-information');
-        let offerCard;
-        let gallery;
         const imageViewer = document.getElementById('image-viewer');
         const imageViewerImage = document.getElementById('image-viewer-image');
         let viewerIndex = 0;
-        const getGalleryButtons = () => gallery
-          ? [...gallery.querySelectorAll('button[data-full-image]')]
-          : [];
+        const getGalleryButtons = () => [...information.querySelectorAll('button[data-full-image]')];
         const showViewerImage = index => {
           const photos = getGalleryButtons();
           if (!photos.length) return;
@@ -407,142 +405,164 @@
         imageViewer.addEventListener('click', event => {
           if (event.target === imageViewer) imageViewer.close();
         });
-        const addDetail = (label, value) => {
+        const addDetail = (label, value, target = information) => {
           if (value === undefined || value === null || value === '') return;
           const detail = document.createElement('p');
           detail.className = 'plant-detail';
           const heading = document.createElement('strong');
           heading.textContent = `${label}: `;
           detail.append(heading, document.createTextNode(String(value)));
-          information.appendChild(detail);
+          target.appendChild(detail);
         };
-        Object.entries(plant).forEach(([key, value]) => {
-          switch (key) {
-            case 'category': {
-              const category = document.createElement('div');
-              category.className = 'badge';
-              category.textContent = value;
-              information.appendChild(category);
-              break;
-            }
-            case 'id':
-              break;
-            case 'name': {
-              const name = document.createElement('h1');
-              name.textContent = value;
-              information.appendChild(name);
-              break;
-            }
-            case 'description': {
-              const description = document.createElement('p');
-              description.className = 'desc';
-              description.textContent = value;
-              information.appendChild(description);
-              break;
-            }
-            case 'Symbolism & Meanings':
-              addDetail(key, value);
-              break;
-            case 'What you get for your money': {
-              offerCard = document.createElement('section');
-              offerCard.className = 'plant-offer';
-              const heading = document.createElement('h2');
-              heading.textContent = key;
-              const description = document.createElement('p');
-              description.className = 'plant-offer-description';
-              description.textContent = value;
-              offerCard.append(heading, description);
-              information.appendChild(offerCard);
-              break;
-            }
-            case 'donation': {
-              const impact = document.createElement('div');
-              impact.className = 'impact-box';
-              const amount = document.createElement('strong');
-              amount.textContent = `$${value} Donation`;
-              const note = document.createElement('span');
-              note.textContent = `100% of this $${value} gift supports Hunger at Home's food-relief work.`;
-              impact.append(amount, note);
-              (offerCard || information).appendChild(impact);
-              break;
-            }
-            case 'marketReference': {
-              if (!value?.text || !value?.url) break;
-              const marketUrl = new URL(value.url, window.location.href);
-              if (marketUrl.protocol !== 'https:' && marketUrl.protocol !== 'http:') {
-                console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
-                break;
-              }
-              const reference = document.createElement('aside');
-              reference.className = 'market-reference';
-              const heading = document.createElement('h2');
-              heading.textContent = 'Similar options elsewhere';
-              const text = document.createElement('p');
-              text.textContent = value.text;
-              const link = document.createElement('a');
-              link.href = marketUrl.href;
-              link.target = '_blank';
-              link.rel = 'noopener noreferrer';
-              link.textContent = 'See example listing';
-              reference.append(heading, text, link);
-              (offerCard || information).appendChild(reference);
-              break;
-            }
-            case 'Care':
-              addDetail('Care', value);
-              break;
-            case 'pickup':
-              document.getElementById('p-pickup').textContent = value;
-              document.getElementById('pickup-location').hidden = false;
-              break;
-            case 'pictures': {
-              const pictures = Array.isArray(value) ? value : Object.values(value || {});
-              const validPictures = pictures.filter(picture => typeof picture === 'string' && picture.trim());
-              if (!validPictures.length) break;
-              const photosHeading = document.createElement('h2');
-              photosHeading.className = 'plant-photos-heading';
-              photosHeading.textContent = 'Real photos from my garden';
-              information.appendChild(photosHeading);
-              gallery = document.createElement('div');
-              gallery.className = 'plant-gallery';
-              gallery.setAttribute('aria-label', 'Real photos from my garden');
-              information.appendChild(gallery);
-              validPictures
-                .forEach((picture, index) => {
-                  const figure = document.createElement('figure');
-                  const button = document.createElement('button');
-                  const image = document.createElement('img');
-                  image.src = picture;
-                  image.alt = `${plant.name} — photo ${index + 1}`;
-                  image.loading = 'lazy';
-                  image.decoding = 'async';
-                  button.type = 'button';
-                  button.dataset.fullImage = picture;
-                  button.dataset.imageAlt = image.alt;
-                  button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
-                  image.addEventListener('error', () => {
-                    figure.remove();
-                    if (!gallery.children.length) {
-                      gallery.previousElementSibling?.remove();
-                      gallery.remove();
-                    }
-                  });
-                  button.appendChild(image);
-                  figure.appendChild(button);
-                  gallery.appendChild(figure);
-                });
-              if (!gallery.children.length) gallery.remove();
-              break;
-            }
-            case 'size':
-              addDetail('Size', value);
-              break;
-            default:
-              if (typeof value === 'string' || typeof value === 'number') {
-                addDetail(key, value);
-              }
+        const category = document.createElement('div');
+        category.className = 'badge';
+        category.textContent = plant.category || '';
+        information.appendChild(category);
+
+        const name = document.createElement('h1');
+        name.textContent = plant.name;
+        information.appendChild(name);
+
+        const description = document.createElement('p');
+        description.className = 'desc';
+        description.textContent = plant.description || '';
+        information.appendChild(description);
+
+        addDetail('Symbolism & Meanings', plant['Symbolism & Meanings']);
+
+        const createSection = headingText => {
+          const section = document.createElement('section');
+          section.className = 'plant-offer';
+          const heading = document.createElement('h2');
+          heading.textContent = headingText;
+          section.appendChild(heading);
+          information.appendChild(section);
+          return section;
+        };
+        const addComingUp = section => {
+          const message = document.createElement('p');
+          message.className = 'plant-offer-description';
+          message.textContent = 'Coming up.';
+          section.appendChild(message);
+        };
+        const renderPhotoGallery = (section, headingText, photoData, introText, galleryLabel = headingText) => {
+          if (headingText) {
+            const galleryHeading = document.createElement('h3');
+            galleryHeading.className = 'plant-photos-heading';
+            galleryHeading.textContent = headingText;
+            section.appendChild(galleryHeading);
           }
-        });
+          if (introText) {
+            const intro = document.createElement('p');
+            intro.className = 'plant-offer-description';
+            intro.textContent = introText;
+            section.appendChild(intro);
+          }
+          const pictures = Array.isArray(photoData)
+            ? photoData
+            : Object.values(photoData || {});
+          const validPictures = pictures.filter(picture => typeof picture === 'string' && picture.trim());
+          if (!validPictures.length) {
+            addComingUp(section);
+            return;
+          }
+          const gallery = document.createElement('div');
+          gallery.className = 'plant-gallery';
+          gallery.setAttribute('aria-label', galleryLabel);
+          section.appendChild(gallery);
+          validPictures.forEach((picture, index) => {
+            const figure = document.createElement('figure');
+            const button = document.createElement('button');
+            const image = document.createElement('img');
+            image.src = picture;
+            image.alt = `${plant.name} — photo ${index + 1}`;
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            button.type = 'button';
+            button.dataset.fullImage = picture;
+            button.dataset.imageAlt = image.alt;
+            button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
+            image.addEventListener('error', () => {
+              figure.remove();
+              if (!gallery.querySelector('figure')) {
+                const message = document.createElement('p');
+                message.className = 'plant-offer-description';
+                message.textContent = 'Coming up.';
+                gallery.replaceWith(message);
+              }
+            });
+            button.appendChild(image);
+            figure.appendChild(button);
+            gallery.appendChild(figure);
+          });
+        };
+
+        const whatYouGet = createSection('What you get for your money');
+        const valueDescription = plant['What you get for your money'];
+        if (valueDescription) {
+          const description = document.createElement('p');
+          description.className = 'plant-offer-description';
+          description.textContent = valueDescription;
+          whatYouGet.appendChild(description);
+        } else {
+          addComingUp(whatYouGet);
+        }
+        if (plant.size) addDetail('Size', plant.size, whatYouGet);
+        const impact = document.createElement('div');
+        impact.className = 'impact-box';
+        const amount = document.createElement('strong');
+        amount.textContent = `$${plant.donation} Donation`;
+        const note = document.createElement('span');
+        note.textContent = `100% of this $${plant.donation} gift supports Hunger at Home's food-relief work.`;
+        impact.append(amount, note);
+        whatYouGet.appendChild(impact);
+
+        const buyingToday = createSection('What you are buying today');
+        const buyingTodayDescription = plant['What you are buying today'];
+        const buyingTodayPictures = plant.buyingTodayPictures;
+        if (buyingTodayDescription) {
+          const description = document.createElement('p');
+          description.className = 'plant-offer-description';
+          description.textContent = buyingTodayDescription;
+          buyingToday.appendChild(description);
+        }
+        if (buyingTodayPictures) {
+          renderPhotoGallery(buyingToday, 'Photos of today’s item', buyingTodayPictures);
+        } else if (!buyingTodayDescription) {
+          addComingUp(buyingToday);
+        }
+
+        const realGarden = createSection('Real photos from my garden');
+        renderPhotoGallery(realGarden, null, plant.pictures, 'This is how it will look.', 'Real photos from my garden');
+
+        const otherNurseries = createSection('What you get in other nurseries');
+        if (plant.marketReference?.text && plant.marketReference?.url) {
+          const marketUrl = new URL(plant.marketReference.url, window.location.href);
+          if (marketUrl.protocol === 'https:' || marketUrl.protocol === 'http:') {
+            const reference = document.createElement('aside');
+            reference.className = 'market-reference';
+            const text = document.createElement('p');
+            text.textContent = plant.marketReference.text;
+            const link = document.createElement('a');
+            link.href = marketUrl.href;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'See example listing';
+            reference.append(text, link);
+            otherNurseries.appendChild(reference);
+          } else {
+            console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
+            addComingUp(otherNurseries);
+          }
+        } else {
+          addComingUp(otherNurseries);
+        }
+
+        if (plant.pickup) {
+          document.getElementById('p-pickup').textContent = plant.pickup;
+          document.getElementById('pickup-location').hidden = false;
+        }
+        addDetail('Care', plant.Care);
         document.getElementById('plant-id').value = plant.id;
         saveDetailsButton.textContent = 'Save details & continue';
 
