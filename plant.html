@@ -358,7 +358,6 @@
     const donationForm = document.getElementById('donation-form');
     const saveDetailsButton = document.getElementById('save-details');
     const formError = document.getElementById('form-error');
-    const trackerResponseFrame = document.getElementById('tracker-response-frame');
     const donationResult = document.getElementById('donation-result');
     const hungerDonationFrame = document.getElementById('hunger-donation-frame');
     let pendingRequestId = null;
@@ -416,7 +415,10 @@
     });
 
     window.addEventListener('message', event => {
-      if (event.source !== trackerResponseFrame.contentWindow ||
+      const trustedResponseOrigin = event.origin === 'null' ||
+        event.origin === 'https://script.google.com' ||
+        event.origin.endsWith('.googleusercontent.com');
+      if (!trustedResponseOrigin ||
           event.data?.type !== 'nursery-pickup-details' ||
           event.data.requestId !== pendingRequestId) {
         return;

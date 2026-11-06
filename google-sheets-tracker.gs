@@ -151,6 +151,6 @@ function postMessageResponse(requestId, status) {
   });
   return HtmlService.createHtmlOutput(
     '<!doctype html><html lang="en"><meta charset="utf-8"><title>Save status</title>' +
-    '<script>window.parent.postMessage(' + message + ', "*");</script></html>'
+    '<script>window.top.postMessage(' + message + ', "*");</script></html>'
   ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
