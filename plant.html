@@ -258,15 +258,7 @@
     .donation-result { margin-top: 24px; }
     .donation-result h3 { color: var(--forest); margin-bottom: 8px; }
     .donation-result p { margin-bottom: 16px; }
-    .hunger-donation-frame {
-      display: block;
-      width: 100%;
-      max-width: 360px;
-      height: 1000px;
-      margin: 0 auto;
-      border: 0;
-      background: white;
-    }
+    .donation-result a { color: var(--forest); font-weight: 600; }
     .honeypot { position: absolute; left: -10000px; }
     .instructions {
       margin-top: 16px;
@@ -343,13 +335,8 @@
         tabindex="-1"></iframe>
       <div class="donation-result" id="donation-result" hidden>
         <h3>Your details are saved</h3>
-        <p>Your pickup details were saved to the nursery’s private sheet and were not sent to Hunger at Home. Their donation form and payment providers load below; donations are made directly to Hunger at Home and are not recorded by this form.</p>
-        <iframe
-          class="hunger-donation-frame"
-          id="hunger-donation-frame"
-          title="Hunger at Home donation form"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <p>Your pickup details were saved to the nursery’s private sheet and were not sent to Hunger at Home. Opening their secure donation form. Donations are made directly to Hunger at Home and are not recorded by this form.</p>
+        <p>If you are not redirected, <a id="continue-to-donation" href="https://hungerathome-bloom.kindful.com/embeds/d57150e7-d3ee-4a12-a30c-2aa8be68bc72?p=https%3A%2F%2Fhungerathome.org&amp;embedded=true&amp;full_form=true">continue to Hunger at Home’s donation form</a>.</p>
       </div>
     </section>
   </div>
@@ -360,7 +347,7 @@
     const saveDetailsButton = document.getElementById('save-details');
     const formError = document.getElementById('form-error');
     const donationResult = document.getElementById('donation-result');
-    const hungerDonationFrame = document.getElementById('hunger-donation-frame');
+    const donationUrl = 'https://hungerathome-bloom.kindful.com/embeds/d57150e7-d3ee-4a12-a30c-2aa8be68bc72?p=https%3A%2F%2Fhungerathome.org&embedded=true&full_form=true';
     let pendingRequestId = null;
     let saveTimeout = null;
     const phoneInput = document.getElementById('donor-phone');
@@ -431,8 +418,7 @@
         donationForm.hidden = true;
         document.getElementById('donation-instructions').hidden = true;
         donationResult.hidden = false;
-        hungerDonationFrame.src = 'https://hungerathome-bloom.kindful.com/embeds/d57150e7-d3ee-4a12-a30c-2aa8be68bc72?p=https%3A%2F%2Fhungerathome.org&embedded=true&full_form=true';
-        donationResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.location.assign(donationUrl);
         return;
       }
 
