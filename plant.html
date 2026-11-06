@@ -254,6 +254,18 @@
     .form-note, .form-error { margin-top: 10px; font-size: 12px; }
     .form-note { color: #717d74; }
     .form-error { color: #9c3025; }
+    .tracker-response-frame { position: absolute; width: 0; height: 0; border: 0; }
+    .donation-result { margin-top: 24px; }
+    .donation-result h3 { color: var(--forest); margin-bottom: 8px; }
+    .donation-result p { margin-bottom: 16px; }
+    .hunger-donation-frame {
+      display: block;
+      width: 100%;
+      height: 900px;
+      border: 1px solid #dbe2dc;
+      border-radius: 12px;
+      background: white;
+    }
     .honeypot { position: absolute; left: -10000px; }
     .instructions {
       margin-top: 16px;
@@ -292,9 +304,10 @@
       <div class="pickup-location" id="pickup-location" hidden>
         <strong>Pickup</strong><br><span id="p-pickup"></span>
       </div>
-      <form id="donation-form" class="donation-form" method="post">
+      <form id="donation-form" class="donation-form" method="post" target="tracker-response">
         <input type="hidden" name="visitorId" id="visitor-id">
         <input type="hidden" name="plantId" id="plant-id">
+        <input type="hidden" name="requestId" id="request-id">
         <div class="honeypot" aria-hidden="true">
           <label for="website">Leave this field empty</label>
           <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
@@ -317,9 +330,26 @@
         </label>
         <button id="save-details" type="submit" class="form-submit" disabled>Save details & continue</button>
         <p id="form-error" class="form-error" role="alert" hidden></p>
-        <p class="form-note">After your details are saved, you can continue to Hunger at Home’s donation page. Your details are not sent there, and this form does not process a donation.</p>
+        <p class="form-note">After your details are saved, Hunger at Home’s donation page will appear here. It may load third-party donation services that process browser data under their own privacy notices. Your details are not sent there, and this form does not process a donation.</p>
       </form>
       <p class="instructions" id="donation-instructions">Phone and email are optional. Your name and consent are required to save pickup details.</p>
+      <iframe
+        class="tracker-response-frame"
+        id="tracker-response-frame"
+        name="tracker-response"
+        title="Pickup details save status"
+        aria-hidden="true"
+        tabindex="-1"></iframe>
+      <div class="donation-result" id="donation-result" hidden>
+        <h3>Your details are saved</h3>
+        <p>Your pickup details were saved to the nursery’s private sheet and were not sent to Hunger at Home. Their donation form and payment providers load below; donations are made directly to Hunger at Home and are not recorded by this form.</p>
+        <iframe
+          class="hunger-donation-frame"
+          id="hunger-donation-frame"
+          title="Hunger at Home donation page"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
     </section>
   </div>
 
@@ -328,6 +358,11 @@
     const donationForm = document.getElementById('donation-form');
     const saveDetailsButton = document.getElementById('save-details');
     const formError = document.getElementById('form-error');
+    const trackerResponseFrame = document.getElementById('tracker-response-frame');
+    const donationResult = document.getElementById('donation-result');
+    const hungerDonationFrame = document.getElementById('hunger-donation-frame');
+    let pendingRequestId = null;
+    let saveTimeout = null;
     const phoneInput = document.getElementById('donor-phone');
     const emailInput = document.getElementById('donor-email');
     const emailPattern = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,63}$/i;
@@ -360,6 +395,9 @@
         return;
       }
 
+      pendingRequestId = globalThis.crypto?.randomUUID?.() ||
+        `request-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+      document.getElementById('request-id').value = pendingRequestId;
       donationForm.action = DONATION_TRACKER_URL;
       window.trackNurseryEvent?.('pickup_details_submit_attempt', {
         plant_id: document.getElementById('plant-id').value
@@ -367,6 +405,38 @@
       saveDetailsButton.disabled = true;
       saveDetailsButton.textContent = 'Saving details…';
       formError.hidden = true;
+      saveTimeout = window.setTimeout(() => {
+        if (!pendingRequestId) return;
+        pendingRequestId = null;
+        formError.textContent = 'We could not confirm that your details were saved. Please check your connection and try again.';
+        formError.hidden = false;
+        saveDetailsButton.disabled = false;
+        saveDetailsButton.textContent = 'Save details & continue';
+      }, 30000);
+    });
+
+    window.addEventListener('message', event => {
+      if (event.source !== trackerResponseFrame.contentWindow ||
+          event.data?.type !== 'nursery-pickup-details' ||
+          event.data.requestId !== pendingRequestId) {
+        return;
+      }
+
+      window.clearTimeout(saveTimeout);
+      pendingRequestId = null;
+      if (event.data.status === 'saved') {
+        donationForm.hidden = true;
+        document.getElementById('donation-instructions').hidden = true;
+        donationResult.hidden = false;
+        hungerDonationFrame.src = 'https://hungerathome.org/donate/';
+        donationResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      formError.textContent = 'We could not save your details. Please check the information and try again.';
+      formError.hidden = false;
+      saveDetailsButton.disabled = false;
+      saveDetailsButton.textContent = 'Save details & continue';
     });
 
     const params = new URLSearchParams(window.location.search);

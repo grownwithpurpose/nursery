@@ -64,7 +64,8 @@ function setupDonationSheet() {
 function doPost(event) {
   const values = event && event.parameter ? event.parameter : {};
   if (values.website) {
-    return donationResponse();
+    return HtmlService.createHtmlOutput("")
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 
   const visitorId = getText(values.visitorId, 80);
@@ -73,23 +74,25 @@ function doPost(event) {
   const email = getText(values.email, 254);
   const plantId = getText(values.plantId, 80);
   const consent = getText(values.consent, 10);
+  const requestId = getText(values.requestId, 80);
 
   if (!/^[a-zA-Z0-9-]{16,80}$/.test(visitorId) ||
       !name ||
       consent !== "yes" ||
+      !/^[a-zA-Z0-9-]{16,80}$/.test(requestId) ||
       !/^[a-z0-9-]{1,80}$/.test(plantId) ||
       (phone && (!/^\+?[0-9][0-9\s().-]*[0-9]$/.test(phone) ||
         phone.replace(/\D/g, "").length < 7 ||
         phone.replace(/\D/g, "").length > 15)) ||
       (email && !/^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,63}$/i.test(email))) {
-    return errorResponse();
+    return errorResponse(requestId);
   }
 
   const spreadsheetId = PropertiesService.getScriptProperties()
     .getProperty(DONATION_SHEET_PROPERTY);
   if (!spreadsheetId) {
     console.error("Missing script property: " + DONATION_SHEET_PROPERTY);
-    return errorResponse();
+    return errorResponse(requestId);
   }
 
   try {
@@ -115,10 +118,10 @@ function doPost(event) {
     }
   } catch (error) {
     console.error("Unable to record donation contact:", error);
-    return errorResponse();
+    return errorResponse(requestId);
   }
 
-  return donationResponse();
+  return donationResponse(requestId);
 }
 
 function getText(value, maxLength) {
@@ -129,24 +132,25 @@ function asSheetText(value) {
   return /^[=+\-@]/.test(value) ? "'" + value : value;
 }
 
-function donationResponse() {
-  return HtmlService.createHtmlOutput(
-    '<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Details saved</title><body style="font:16px/1.6 Arial,sans-serif;max-width:560px;margin:48px auto;padding:24px;color:#29372f;min-height:70vh;display:flex;flex-direction:column">' +
-    '<h1 style="color:#244638">Your details are saved</h1>' +
-    '<p>Your name and optional contact details were saved to the nursery’s private sheet for pickup coordination. They were not sent to Hunger at Home.</p>' +
-    '<p>This does not confirm or process a donation.</p>' +
-    '<div style="flex:1"></div>' +
-    '<a href="https://hungerathome.org/donate/" target="_blank" rel="noopener noreferrer" style="display:block;box-sizing:border-box;width:100%;padding:14px;border-radius:10px;background:#244638;color:#fff;text-align:center;text-decoration:none;font-weight:600">Donate &amp; Arrange Pickup</a>' +
-    '</body></html>'
-  );
+function donationResponse(requestId) {
+  return postMessageResponse(requestId, "saved");
 }
 
-function errorResponse() {
+function errorResponse(requestId) {
+  return postMessageResponse(requestId, "error");
+}
+
+function postMessageResponse(requestId, status) {
+  const safeRequestId = /^[a-zA-Z0-9-]{16,80}$/.test(requestId || "")
+    ? requestId
+    : "";
+  const message = JSON.stringify({
+    type: "nursery-pickup-details",
+    status: status,
+    requestId: safeRequestId
+  });
   return HtmlService.createHtmlOutput(
-    '<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Details not saved</title><body style="font:16px/1.6 Arial,sans-serif;max-width:560px;margin:48px auto;padding:24px;color:#29372f">' +
-    '<h1 style="color:#244638">We could not save your details</h1>' +
-    '<p>Please return to the nursery page and try again, or contact the nursery to arrange pickup.</p></body></html>'
-  );
+    '<!doctype html><html lang="en"><meta charset="utf-8"><title>Save status</title>' +
+    '<script>window.parent.postMessage(' + message + ', "*");</script></html>'
+  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
