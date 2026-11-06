@@ -12,7 +12,6 @@
       "url": "TODO"
     },
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
-    "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "TODO"
     }
@@ -30,7 +29,6 @@
       "url": "TODO"
     },
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
-    "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "pictures/Avacado-Tree-1.jpg"
     }
@@ -38,7 +36,7 @@
   {
     "category": "Plants and Shrubs",
     "id": "yellow-rose",
-    "name": "Yellow Rose",
+    "name": "Happy Go Lucky - Yellow Rose",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes. A grandiflora with the old-fashioned good looks of an English garden rose but the excellent disease resistance and minimal upkeep requirements of a top-quality modern hybrid. Each fully double, pure yellow bloom produced by this bushy, vigorous variety measures an enormous 6 in diameter and has a fruity fragrance about it. Plants have large, glossy, medium green leaves and grow 3–5' tall. You can count on Happy Go Lucky to bloom continually from late spring until the first frost of autumn. Great for use in beds and borders, and a wonderful cut flower.",
     "Symbolism & Meanings": "Yellow roses are often associated with friendship, warmth, and joy.",
     "What you get for your money": "TODO",
@@ -48,7 +46,6 @@
       "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
     },
     "Care": "Full sun, deep watering 1-2 times weekly, rich composted organic soil",
-    "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "pictures/HappyGoLucky.jpg",
       "2": "pictures/HappyGoLucky-Grandiflora.jpg"
@@ -57,7 +54,7 @@
   {
     "category": "Plants and Shrubs",
     "id": "pink-rose-vine",
-    "name": "Ceceille Brunner Rose Vine",
+    "name": "Pink Ceceille Brunner Rose Vine",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "Symbolism & Meanings": "Represents purity, innocence, remembrance, and sympathy.",
     "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season. That is why it does not have flowers today.",
@@ -67,14 +64,31 @@
       "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
     },
     "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. If you prune all the excess growth and keep only the main canes in winter, the vine will profusley bloom next season. Thats a gift that will never stop giving",
-    "pickup": "TODO",
     "pictures": {
       "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
       "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
     }
   },
   {
-    "category": "Flower Vase — Assorted Flowers of the Day",
+    "category": "Plants and Shrubs",
+    "id": "white-rose-shrub",
+    "name": "White Iceberg Rose Shrub",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "Symbolism & Meanings": "Represents purity, innocence, remembrance, and sympathy.",
+    "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season. That is why it does not have flowers today.",
+    "donation": 50,
+    "marketReference": {
+      "text": "A similar rose in a 5 gallon pot is listed for around $50. Prices and availability may change.",
+      "url": "https://plantsexpress.com/products/white-iceberg-shrub-rose?variant=43513064161535"
+    },
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. If you prune all the excess growth and keep only the main canes in winter, the vine will profusley bloom next season. Thats a gift that will never stop giving",
+    "pictures": {
+      "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
+      "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
+    }
+  },
+  {
+    "category": "Assorted Flowers of the Day - Arrangement in a vase",
     "id": "Small-Flower-Vase",
     "name": "Assorted Flowers of the Day",
     "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
@@ -82,11 +96,10 @@
     "What you get for your money": "A small seasonal flower arrangement in a 6-inch vase.",
     "donation": 20,
     "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
+      "text": "1-800 flowers medium size around 6-7 flowers around 50$ ",
+      "url": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "TODO",
-    "pickup": "San Jose, CA · By arrangement",
+    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
@@ -102,11 +115,12 @@
     "What you get for your money": "A medium seasonal flower arrangement in a 12-inch vase.",
     "donation": 40,
     "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
+      "text": "Around 50$ in departmental store like safeway ",
+      "url": "https://www.safeway.com/shop/pd/overjoyed-boutique-unforgettable-arrangement-each/970022365",
+      "text1": "1-800 flowers medium size around 10 flowers around 74$ ",
+      "url1": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "TODO",
-    "pickup": "San Jose, CA · By arrangement",
+    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light",
     "pictures": {
       "1": "pictures/Medium-Vase-1.jpg",
       "2": "pictures/Medium-FlowerVase-1.png"
@@ -119,37 +133,14 @@
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
     "Symbolism & Meanings": "Not applicable to a consultation service.",
     "What you get for your money": "TODO",
-    "donation": 40,
-    "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
-    },
-    "Care": "TODO",
-    "pickup": "TODO",
-    "pictures": {
-      "1": "pictures/Small-FlowerVase-1.jpg",
-      "2": "pictures/Small-FlowerVase-2.jpg",
-      "3": "pictures/Small-FlowerVase-3.jpg"
-    }
+    "donation": 40
   },
   {
     "category": "Consultation",
     "id": "plant-consultation-30-min",
     "name": "30 min plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
-    "Symbolism & Meanings": "Not applicable to a consultation service.",
     "What you get for your money": "TODO",
-    "donation": 20,
-    "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
-    },
-    "Care": "TODO",
-    "pickup": "TODO",
-    "pictures": {
-      "1": "pictures/Small-FlowerVase-1.jpg",
-      "2": "pictures/Small-FlowerVase-2.jpg",
-      "3": "pictures/Small-FlowerVase-3.jpg"
-    }
+    "donation": 20
   }
 ]
