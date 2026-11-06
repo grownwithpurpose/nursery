@@ -22,9 +22,9 @@ If their mission resonates with you, consider taking a moment to support their w
 
 ## Donation contact and pickup tracking
 
-The plant page collects the visitor's name and optional phone/email. With the visitor's consent, it posts those details and the plant ID to a Google Apps Script web app that appends a row to the private Sheet. After the Sheet write succeeds, the page displays Hunger at Home's public donation page in an iframe. The Apps Script response uses `window.top.postMessage` because Apps Script wraps its response in a nested Google-hosted frame; the page accepts only Google-hosted messages with the matching one-time request ID.
+The plant page collects the visitor's name and optional phone/email. With the visitor's consent, it posts those details and the plant ID to a Google Apps Script web app that appends a row to the private Sheet. After the Sheet write succeeds, the page displays Hunger at Home's Kindful donation form directly in an iframe, without the rest of Hunger at Home's site. The Apps Script response uses `window.top.postMessage` because Apps Script wraps its response in a nested Google-hosted frame; the page accepts only Google-hosted messages with the matching one-time request ID.
 
-The contact details are sent only to the nursery's Google Sheet; they are not forwarded to Hunger at Home. The embedded page is `https://hungerathome.org/donate/`; it does not receive plant or contact details. The current page loads Hunger at Home's donation form through its Kindful provider and uses Stripe for card entry. Those providers may process browser data under their own privacy notices. The nursery does not verify donations or record donation amounts. Do not collect card details or retain donation receipts.
+The contact details are sent only to the nursery's Google Sheet; they are not forwarded to Hunger at Home or Kindful. The embedded form uses Hunger at Home's Kindful provider and Stripe for card entry. Those providers may process browser data under their own privacy notices. The nursery does not verify donations or record donation amounts. Do not collect card details or retain donation receipts.
 
 ### Configure the private Google Sheet endpoint
 

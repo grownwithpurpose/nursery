@@ -152,6 +152,7 @@
           const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(plantUrl)}`;
           const firstGalleryPhoto = plant.pictures && Object.values(plant.pictures)[0];
           const photo = plant.pic || firstGalleryPhoto;
+          const donationLabel = plant.donation == null ? 'Any Amount' : `$${plant.donation}`;
           const photoMarkup = photo && photo.trim().toUpperCase() !== 'TODO'
             ? `<img class="plant-photo" src="${photo}" alt="${plant.name}" onerror="this.remove()">`
             : '';
@@ -172,8 +173,8 @@
             </div>
             <div class="bottom-row">
               <div class="donation-callout">
-                <div class="price">$${plant.donation}</div>
-                <div class="charity">100% donated to Hunger at Home (San Jose)</div>
+                <div class="price">${donationLabel}</div>
+                <div class="charity">${plant.donation == null ? 'Choose an amount to donate directly to Hunger at Home' : '100% donated to Hunger at Home (San Jose)'}</div>
               </div>
               <div class="qr-box">
                 <img src="${qrApiUrl}" alt="Scan for care tips and payment">

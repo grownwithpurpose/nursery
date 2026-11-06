@@ -2,12 +2,11 @@
   {
     "category": "Trees",
     "id": "crepe-myrtle",
-    "name": "Tuscarora Crepe Myrtle",
+    "name": "4 Feet 3 Year old Crepe Myrtle Tree",
     "pic": "pictures/Tuscarora-Crepe-Myrtle-1.jpg",
     "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
-    "Symbolism & Meanings": "Often associated with beauty, resilience, and lasting affection.",
     "What you get for your money": "TODO",
-    "donation": 30,
+    "donation": 50,
     "marketReference": {
       "text": "TODO",
       "url": "TODO"
@@ -22,10 +21,9 @@
     "id": "avacado",
     "name": "Avacado",
     "pic": "pictures/Avacado-Tree-1.jpg",
-    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
-    "Symbolism & Meanings": "Often associated with nourishment, vitality, and abundance.",
+    "description": "6 Feet Avacado tree - 2 year old",
     "What you get for your money": "TODO",
-    "donation": 30,
+    "donation": 50,
     "marketReference": {
       "text": "TODO",
       "url": "TODO"
@@ -59,7 +57,7 @@
     "id": "pink-rose-vine",
     "name": "Pink Ceceille Brunner Rose Vine",
     "pic": "pictures/Ceceille Brunner Rose Vine-1.jpg",
-    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
+    "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes. Small, delicately pointed buds open to fragrant, light pink, double blooms in large sprays. An ever popular climber for a trellis or arbor in cottage or country gardens. Deciduous. Heaviest frangrant blooms in spring; scattered rebloom to fall",
     "Symbolism & Meanings": "Represents purity, innocence, remembrance, and sympathy.",
     "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season. That is why it does not have flowers today.",
     "donation": 40,
@@ -86,7 +84,7 @@
       "text": "A similar rose in a 5 gallon pot is listed for around $50. Prices and availability may change.",
       "url": "https://plantsexpress.com/products/white-iceberg-shrub-rose?variant=43513064161535"
     },
-    "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. If you prune all the excess growth and keep only the main canes in winter, the vine will profusley bloom next season. Thats a gift that will never stop giving",
+    "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. ",
     "pictures": {
       "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
       "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
@@ -100,17 +98,17 @@
     "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
     "What you get for your money": "A small seasonal flower arrangement in a 6-inch vase.",
+    "pictures": {
+      "1": "pictures/Small-FlowerVase-1.jpg",
+      "2": "pictures/Small-FlowerVase-2.jpg",
+      "3": "pictures/Small-FlowerVase-3.jpg"
+    },
     "donation": 20,
     "marketReference": {
       "text": "1-800 flowers medium size around 6-7 flowers around 50$ ",
       "url": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light",
-    "pictures": {
-      "1": "pictures/Small-FlowerVase-1.jpg",
-      "2": "pictures/Small-FlowerVase-2.jpg",
-      "3": "pictures/Small-FlowerVase-3.jpg"
-    }
+    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light"
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
@@ -120,6 +118,10 @@
     "description": "A medium size seasonal arrangement of assorted flowers hand picked from the garden arranged in a vase",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
     "What you get for your money": "A medium seasonal flower arrangement in a 12-inch vase.",
+    "pictures": {
+      "1": "pictures/Medium-Vase-1.jpg",
+      "2": "pictures/Medium-FlowerVase-1.png"
+    },
     "donation": 40,
     "marketReference": {
       "text": "Around 50$ in departmental store like safeway ",
@@ -127,19 +129,21 @@
       "text1": "1-800 flowers medium size around 10 flowers around 74$ ",
       "url1": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light",
-    "pictures": {
-      "1": "pictures/Medium-Vase-1.jpg",
-      "2": "pictures/Medium-FlowerVase-1.png"
-    }
+    "Care": "Just make sure it has adequate water and is kept in a cool, filtered light"
+  },
+  {
+    "category": "Nursery",
+    "id": "nursery-goods-services",
+    "name": "Any Amount — Nursery Goods & Services",
+    "description": "Choose any amount as a contribution associated with nursery goods or services. Payment is made directly to Hunger at Home; the nursery does not receive or process payment.",
+    "What you get for your money": "Choose any amount that feels right. Contributions are made directly to Hunger at Home and are not payments to the nursery.",
+    "donation": null
   },
   {
     "category": "Consultation",
     "id": "plant-consultation-60-min",
     "name": "1 hour plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
-    "Symbolism & Meanings": "Not applicable to a consultation service.",
-    "What you get for your money": "TODO",
     "donation": 40
   },
   {
@@ -147,7 +151,6 @@
     "id": "plant-consultation-30-min",
     "name": "30 min plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
-    "What you get for your money": "TODO",
     "donation": 20
   }
 ]
