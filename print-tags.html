@@ -144,7 +144,7 @@
               <div class="nursery-title">The Little Garden Nursery · San Jose</div>
               <h2 class="plant-name">${plant.name}</h2>
               <div class="care-notes">
-                ${plant.Care ? `<strong>Care:</strong> ${plant.Care}` : ''}
+                ${plant.Care && plant.Care.trim().toUpperCase() !== 'TODO' ? `<strong>Care:</strong> ${plant.Care}` : '<strong>Care:</strong> Coming up.'}
                 ${plant['Symbolism & Meanings'] ? `<br><strong>Symbolism:</strong> ${plant['Symbolism & Meanings']}` : ''}
               </div>
             </div>

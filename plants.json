@@ -5,9 +5,17 @@
     "name": "Tuscarora Crepe Myrtle",
     "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
     "Symbolism & Meanings": "Often associated with beauty, resilience, and lasting affection.",
+    "What you get for your money": "TODO",
     "donation": 30,
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
-    "pickup": "San Jose, CA · By arrangement"
+    "pickup": "San Jose, CA · By arrangement",
+    "pictures": {
+      "1": "TODO"
+    }
   },
   {
     "category": "Trees",
@@ -15,7 +23,12 @@
     "name": "Avacado",
     "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
     "Symbolism & Meanings": "Often associated with nourishment, vitality, and abundance.",
+    "What you get for your money": "TODO",
     "donation": 30,
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
     "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
     "pickup": "San Jose, CA · By arrangement",
     "pictures": {
@@ -28,6 +41,7 @@
     "name": "Yellow Rose",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "Symbolism & Meanings": "Yellow roses are often associated with friendship, warmth, and joy.",
+    "What you get for your money": "TODO",
     "donation": 15,
     "marketReference": {
       "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
@@ -53,6 +67,7 @@
       "url": "https://gardenplantnursery.shop/product/cecile-brunner-climbing-rose-live-plant-2-feet-tall-in-6-inch-pot-outdoor-shrub/"
     },
     "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. If you prune all the excess growth and keep only the main canes in winter, the vine will profusley bloom next season. Thats a gift that will never stop giving",
+    "pickup": "TODO",
     "pictures": {
       "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
       "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
@@ -64,15 +79,19 @@
     "name": "Assorted Flowers of the Day",
     "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
+    "What you get for your money": "A small seasonal flower arrangement in a 6-inch vase.",
     "donation": 20,
-    "Care": "",
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
+    "Care": "TODO",
     "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
       "3": "pictures/Small-FlowerVase-3.jpg"
-    },
-    "size": "6 inch"
+    }
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
@@ -80,14 +99,18 @@
     "name": "Mediumn Assorted Flowers of the Day",
     "description": "A medium size seasonal arrangement of assorted flowers hand picked from the garden arranged in a vase",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
+    "What you get for your money": "A medium seasonal flower arrangement in a 12-inch vase.",
     "donation": 40,
-    "Care": "",
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
+    "Care": "TODO",
     "pickup": "San Jose, CA · By arrangement",
     "pictures": {
       "1": "pictures/Medium-Vase-1.jpg",
       "2": "pictures/Medium-FlowerVase-1.png"
-    },
-    "size": "12 inch"
+    }
   },
   {
     "category": "Consultation",
@@ -95,8 +118,14 @@
     "name": "1 hour plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
     "Symbolism & Meanings": "Not applicable to a consultation service.",
+    "What you get for your money": "TODO",
     "donation": 40,
-    "Care": "",
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
+    "Care": "TODO",
+    "pickup": "TODO",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
@@ -109,8 +138,14 @@
     "name": "30 min plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
     "Symbolism & Meanings": "Not applicable to a consultation service.",
+    "What you get for your money": "TODO",
     "donation": 20,
-    "Care": "",
+    "marketReference": {
+      "text": "TODO",
+      "url": "TODO"
+    },
+    "Care": "TODO",
+    "pickup": "TODO",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",

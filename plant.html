@@ -421,7 +421,10 @@
           detail.className = 'plant-detail';
           const heading = document.createElement('strong');
           heading.textContent = `${label}: `;
-          detail.append(heading, document.createTextNode(String(value)));
+          const displayValue = typeof value === 'string' && value.trim().toUpperCase() === 'TODO'
+            ? 'Coming up.'
+            : String(value);
+          detail.append(heading, document.createTextNode(displayValue));
           target.appendChild(detail);
         };
         const category = document.createElement('div');
@@ -471,7 +474,9 @@
           const pictures = Array.isArray(photoData)
             ? photoData
             : Object.values(photoData || {});
-          const validPictures = pictures.filter(picture => typeof picture === 'string' && picture.trim());
+          const validPictures = pictures.filter(picture =>
+            typeof picture === 'string' && picture.trim() && picture.trim().toUpperCase() !== 'TODO'
+          );
           if (!validPictures.length) {
             addComingUp(section);
             return;
@@ -509,7 +514,7 @@
 
         const whatYouGet = createSection('What you get for your money');
         const valueDescription = plant['What you get for your money'];
-        if (valueDescription) {
+        if (valueDescription && valueDescription.trim().toUpperCase() !== 'TODO') {
           const description = document.createElement('p');
           description.className = 'plant-offer-description';
           description.textContent = valueDescription;
@@ -546,7 +551,9 @@
         renderPhotoGallery(realGarden, null, plant.pictures, 'This is how it will look.', 'Real photos from my garden');
 
         const otherNurseries = createSection('What you get in other nurseries');
-        if (plant.marketReference?.text && plant.marketReference?.url) {
+        if (plant.marketReference?.text && plant.marketReference?.url &&
+            plant.marketReference.text.trim().toUpperCase() !== 'TODO' &&
+            plant.marketReference.url.trim().toUpperCase() !== 'TODO') {
           const marketUrl = new URL(plant.marketReference.url, window.location.href);
           if (marketUrl.protocol === 'https:' || marketUrl.protocol === 'http:') {
             const reference = document.createElement('aside');
@@ -569,7 +576,8 @@
         }
 
         if (plant.pickup) {
-          document.getElementById('p-pickup').textContent = plant.pickup;
+          document.getElementById('p-pickup').textContent =
+            plant.pickup.trim().toUpperCase() === 'TODO' ? 'Coming up.' : plant.pickup;
           document.getElementById('pickup-location').hidden = false;
         }
         addDetail('Care', plant.Care);
