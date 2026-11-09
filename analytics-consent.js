@@ -1,11 +1,12 @@
 (() => {
-  const GTM_CONTAINER_ID = 'GTM-TRGRJS7Z';
+  const GA4_MEASUREMENT_ID = 'G-5QJ7JNEMNP';
   const CONSENT_STORAGE_KEY = 'nursery-analytics-consent';
-  let googleTagManagerLoaded = false;
+  let googleAnalyticsLoaded = false;
+  const pendingEvents = [];
 
-  const loadGoogleTagManager = () => {
-    if (googleTagManagerLoaded) return;
-    googleTagManagerLoaded = true;
+  const loadGoogleAnalytics = () => {
+    if (googleAnalyticsLoaded) return;
+    googleAnalyticsLoaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = window.gtag || function () {
       window.dataLayer.push(arguments);
@@ -17,18 +18,22 @@
       ad_personalization: 'denied'
     });
     window.gtag('consent', 'update', { analytics_storage: 'granted' });
-    window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    window.gtag('js', new Date());
+    window.gtag('config', GA4_MEASUREMENT_ID);
 
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
     document.head.appendChild(script);
   };
 
   window.trackNurseryEvent = (eventName, parameters = {}) => {
-    if (localStorage.getItem(CONSENT_STORAGE_KEY) !== 'accepted') return;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ ...parameters, event: eventName });
+    const consent = localStorage.getItem(CONSENT_STORAGE_KEY);
+    if (consent !== 'accepted') {
+      if (consent === null) pendingEvents.push({ eventName, parameters });
+      return;
+    }
+    window.gtag('event', eventName, parameters);
   };
 
   const banner = document.createElement('aside');
@@ -72,12 +77,15 @@
   acceptButton.addEventListener('click', () => {
     localStorage.setItem(CONSENT_STORAGE_KEY, 'accepted');
     hideBanner();
-    loadGoogleTagManager();
+    loadGoogleAnalytics();
+    pendingEvents.splice(0).forEach(({ eventName, parameters }) => {
+      window.gtag('event', eventName, parameters);
+    });
     window.trackNurseryEvent('analytics_consent', { choice: 'accepted' });
   });
 
   rejectButton.addEventListener('click', () => {
-    const wasLoaded = googleTagManagerLoaded;
+    const wasLoaded = googleAnalyticsLoaded;
     localStorage.setItem(CONSENT_STORAGE_KEY, 'rejected');
     hideBanner();
     if (wasLoaded) {
@@ -100,7 +108,7 @@
   const savedChoice = localStorage.getItem(CONSENT_STORAGE_KEY);
   if (savedChoice === 'accepted') {
     settingsButton.hidden = false;
-    loadGoogleTagManager();
+    loadGoogleAnalytics();
   } else if (savedChoice === 'rejected') {
     settingsButton.hidden = false;
   } else {
