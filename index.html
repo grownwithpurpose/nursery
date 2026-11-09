@@ -321,6 +321,35 @@
       text-align: center;
       text-transform: uppercase;
     }
+    .lg-footer-contact {
+      width: fit-content;
+      margin: 18px auto 0;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font: 700 18px/1.5 Arial, sans-serif;
+      letter-spacing: normal;
+      text-transform: none;
+      scroll-margin-block: 24px;
+      transition: background-color 180ms ease, color 180ms ease;
+    }
+    .lg-footer-contact a {
+      display: inline-block;
+      margin-left: 4px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #f7f5ee;
+      color: #1c382b;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+    .lg-footer-contact a:focus-visible {
+      outline: 3px solid #e8c0a6;
+      outline-offset: 3px;
+    }
+    .lg-footer-contact:target {
+      background: #e8c0a6;
+      color: #1c382b;
+    }
 
     @media (max-width: 768px) {
       .lg-hero, .lg-mission { grid-template-columns: 1fr; }
@@ -338,8 +367,6 @@
             <div class="lg-links">
                 <a href="#plants">Plant Catalog</a>
                 <a href="#purpose">Our Purpose</a>
-                <a href="printable-catalog.html" target="_blank">Printable Catalog</a>
-                <a href="print-tags.html" target="_blank">Print Stakes</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
@@ -389,9 +416,10 @@
                 <p class="catalog-status">Loading plants…</p>
             </div>
         </section>
-        <div class="lg-footer">
+        <footer class="lg-footer">
             THE LITTLE GARDEN NURSERY  ·  SAN JOSE, CALIFORNIA  ·  GROWN WITH PURPOSE
-</div>
+            <p class="lg-footer-contact" id="contact">Contact: <a href="mailto:vaidehi@grownwithpurpose.com">vaidehi@grownwithpurpose.com</a></p>
+        </footer>
         <script>
     fetch('plants.json', { cache: 'no-cache' })
       .then(res => {
