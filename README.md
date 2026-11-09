@@ -54,6 +54,8 @@ The site sends these custom events to GA4 after consent:
 
 The `Plant ID` event-scoped custom dimension maps the `plant_id` event parameter. To compare plant views, open **Explore → Free form**, add `Plant ID` as a row and **Event count** as a metric, and filter `Event name` to `view_plant_detail`. Add **Total users** to compare unique visitors. The site does not send names, phone numbers, email addresses, form contents, or the pickup form's Visitor ID to analytics.
 
+To mark your own browser's visits as developer traffic, set `localStorage.setItem('nursery-analytics-developer-traffic', 'true')` in that browser's developer console, then reload and accept analytics. Repeat on each personal device/browser. Remove the key or set it to `false` to stop marking that browser's traffic as developer traffic.
+
 ### Adding plant photos
 
 Add image filenames to a plant's `pictures` property in `plants.json`; it may be an array or an object whose values are image paths. The plant detail page displays every listed image in a responsive gallery. Upload or copy the image files into the `pictures/` directory, then use paths relative to `plant.html` such as `pictures/yellow-rose-1.jpg`. Publish both the JSON and image files. Missing or unreadable images are omitted from the gallery.

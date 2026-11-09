@@ -1,11 +1,13 @@
 (() => {
   const GA4_MEASUREMENT_ID = 'G-5QJ7JNEMNP';
   const CONSENT_STORAGE_KEY = 'nursery-analytics-consent';
+  const DEVICE_EXCLUSION_STORAGE_KEY = 'nursery-analytics-device-excluded';
+  const DEVELOPER_TRAFFIC_STORAGE_KEY = 'nursery-analytics-developer-traffic';
   let googleAnalyticsLoaded = false;
-  const pendingEvents = [];
 
   const loadGoogleAnalytics = () => {
-    if (googleAnalyticsLoaded) return;
+    if (googleAnalyticsLoaded ||
+        localStorage.getItem(DEVICE_EXCLUSION_STORAGE_KEY) === 'true') return;
     googleAnalyticsLoaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = window.gtag || function () {
@@ -19,7 +21,9 @@
     });
     window.gtag('consent', 'update', { analytics_storage: 'granted' });
     window.gtag('js', new Date());
-    window.gtag('config', GA4_MEASUREMENT_ID);
+    window.gtag('config', GA4_MEASUREMENT_ID, {
+      debug_mode: localStorage.getItem(DEVELOPER_TRAFFIC_STORAGE_KEY) === 'true'
+    });
 
     const script = document.createElement('script');
     script.async = true;
@@ -29,10 +33,8 @@
 
   window.trackNurseryEvent = (eventName, parameters = {}) => {
     const consent = localStorage.getItem(CONSENT_STORAGE_KEY);
-    if (consent !== 'accepted') {
-      if (consent === null) pendingEvents.push({ eventName, parameters });
-      return;
-    }
+    if (consent !== 'accepted' ||
+        localStorage.getItem(DEVICE_EXCLUSION_STORAGE_KEY) === 'true') return;
     window.gtag('event', eventName, parameters);
   };
 
@@ -78,9 +80,6 @@
     localStorage.setItem(CONSENT_STORAGE_KEY, 'accepted');
     hideBanner();
     loadGoogleAnalytics();
-    pendingEvents.splice(0).forEach(({ eventName, parameters }) => {
-      window.gtag('event', eventName, parameters);
-    });
     window.trackNurseryEvent('analytics_consent', { choice: 'accepted' });
   });
 
@@ -106,7 +105,9 @@
   });
 
   const savedChoice = localStorage.getItem(CONSENT_STORAGE_KEY);
-  if (savedChoice === 'accepted') {
+  if (localStorage.getItem(DEVICE_EXCLUSION_STORAGE_KEY) === 'true') {
+    settingsButton.hidden = false;
+  } else if (savedChoice === 'accepted') {
     settingsButton.hidden = false;
     loadGoogleAnalytics();
   } else if (savedChoice === 'rejected') {
