@@ -98,21 +98,24 @@
     "plantOrder": 1,
     "id": "Small-Flower-Vase",
     "name": "Small Assorted Flowers of the Day",
-    "pic": "pictures/Small-FlowerVase-1.jpg",
+    "pic": "pictures/small-pot-arrangement-2.jpg",
     "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
-    "What you get for your money": "A small seasonal flower arrangement in a 6-inch vase.",
+    "What you get for your money": "A charming, small seasonal arrangement in a 6-inch vase. We handpick a fresh mix of whatever beautiful blooms are currently thriving in the garden!",
     "pictures": {
       "1": "pictures/Small-FlowerVase-1.jpg",
       "2": "pictures/Small-FlowerVase-2.jpg",
-      "3": "pictures/Small-FlowerVase-3.jpg"
+      "3": "pictures/Small-FlowerVase-3.jpg",
+      "4": "pictures/small-pot-arrangement-1.jpg",
+      "5": "pictures/small-pot-arrangement-2.jpg",
+      "6": "pictures/small-pot-arrangement-3.jpg"
     },
-    "donation": 20,
+    "donation": 15,
     "marketReference": {
       "text": "1-800 flowers medium size around 6-7 flowers around 50$ ",
       "url": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "Just make sure it has adwquate water and is kept in a cool, filtered light"
+    "Care": "Just make sure it has adequate water and is kept in a cool, indoor light"
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
@@ -126,23 +129,46 @@
     "What you get for your money": "A medium seasonal flower arrangement in a 12-inch vase.",
     "pictures": {
       "1": "pictures/Medium-Vase-1.jpg",
-      "2": "pictures/Medium-FlowerVase-1.png"
+      "2": "pictures/Medium-FlowerVase-1.png",
+      "3": "pictures/medium-pot-arrangement-1.jpeg"
     },
-    "donation": 40,
+    "donation": 30,
     "marketReference": {
       "text": "Around 50$ in departmental store like safeway ",
       "url": "https://www.safeway.com/shop/pd/overjoyed-boutique-unforgettable-arrangement-each/970022365",
       "text1": "1-800 flowers medium size around 10 flowers around 74$ ",
       "url1": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
     },
-    "Care": "Just make sure it has adequate water and is kept in a cool, filtered light"
+    "Care": "Just make sure it has adequate water and is kept in a cool, indoor light"
+  },
+  {
+    "category": "Assorted Flowers of the Day - Arrangement in a vase",
+    "categoryOrder": 2,
+    "plantOrder": 3,
+    "id": "Large-Flower-Vase",
+    "name": "Large Assorted Flowers of the Day",
+    "pic": "pictures/large-pot-arrangement-1.jpg",
+    "description": "A large size of seasonal arrangement of assorted flowers picked from the garden.",
+    "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
+    "What you get for your money": "A large seasonal flower arrangement in a 12-inch vase.",
+    "pictures": {
+      "1": "pictures/large-pot-arrangement-1.jpg",
+      "2": "pictures/large-pot-arrangement-2.jpg",
+      "3": "pictures/large-pot-arrangement-3.jpg"
+    },
+    "donation": 40,
+    "marketReference": {
+      "text": "1-800 flowers large size around 10-12 flowers around 100$. Safeway offers similar kind for about 60-70$",
+      "url": "https://www.1800flowers.com/elegant-blush-bouquet-191169"
+    },
+    "Care": "Just make sure it has adequate water and is kept in a cool, indoor light"
   },
   {
     "category": "Wildcard",
     "categoryOrder": 5,
     "plantOrder": 1,
     "id": "nursery-goods-services",
-    "name": "Any Amount — Nursery Goods & Services",
+    "name": "Choose any amount that feels right for anything, as all contributions are 100% donated",
     "description": "Choose any amount as a contribution associated with nursery goods or services. Payment is made directly to Hunger at Home; the nursery does not receive or process payment.",
     "What you get for your money": "Choose any amount that feels right. Contributions are made directly to Hunger at Home and are not payments to the nursery.",
     "donation": null
