@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plant Care & Donation — The Little Garden Nursery</title>
   <link rel="stylesheet" href="analytics-consent.css">
+  <link rel="stylesheet" href="photo-viewer.css">
   <style>
     :root {
       --forest: #244638;
@@ -80,52 +81,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-    .image-viewer {
-      position: fixed;
-      width: min(94vw, 1200px);
-      max-width: none;
-      max-height: 92vh;
-      margin: auto;
-      padding: 48px 16px 16px;
-      overflow: visible;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 14px;
-      background: #17211b;
-      box-shadow: 0 18px 70px rgba(0,0,0,0.45);
-    }
-    .image-viewer[open] { display: grid; place-items: center; }
-    .image-viewer::backdrop { background: rgba(10,16,12,0.84); }
-    .image-viewer-next {
-      display: block;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-    }
-    .image-viewer-next:focus-visible {
-      outline: 3px solid #fff;
-      outline-offset: 4px;
-    }
-    .image-viewer-next img {
-      display: block;
-      max-width: 100%;
-      max-height: calc(92vh - 64px);
-      object-fit: contain;
-      margin: 0 auto;
-    }
-    .image-viewer-close {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      min-width: 38px;
-      min-height: 38px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      background: #fff;
-      color: var(--forest);
-      font: 700 24px/1 Arial, sans-serif;
-      cursor: pointer;
     }
     .pickup-location {
       padding: 12px 14px;
@@ -318,12 +273,6 @@
         <h2 id="care-heading">About this plant</h2>
       </div>
       <div id="plant-information"></div>
-      <dialog class="image-viewer" id="image-viewer" aria-label="Enlarged plant photo">
-        <button class="image-viewer-close" id="image-viewer-close" type="button" aria-label="Close enlarged photo">&times;</button>
-        <button class="image-viewer-next" id="image-viewer-next" type="button" aria-label="Show next plant photo">
-          <img id="image-viewer-image" alt="">
-        </button>
-      </dialog>
     </section>
 
     <section class="page-section pickup-section" aria-labelledby="pickup-heading">
@@ -482,42 +431,6 @@
         document.title = `${plant.name} — Care & Pickup`;
         window.trackNurseryEvent?.('view_plant_detail', { plant_id: plant.id });
         const information = document.getElementById('plant-information');
-        const imageViewer = document.getElementById('image-viewer');
-        const imageViewerImage = document.getElementById('image-viewer-image');
-        let viewerIndex = 0;
-        const getGalleryButtons = () => [...information.querySelectorAll('button[data-full-image]')];
-        const showViewerImage = index => {
-          const photos = getGalleryButtons();
-          if (!photos.length) return;
-          viewerIndex = index % photos.length;
-          const photo = photos[viewerIndex];
-          imageViewerImage.src = photo.dataset.fullImage;
-          imageViewerImage.alt = photo.dataset.imageAlt;
-          document.getElementById('image-viewer-next').setAttribute(
-            'aria-label',
-            `Show next plant photo (${viewerIndex + 1} of ${photos.length})`
-          );
-        };
-        information.addEventListener('click', event => {
-          const trigger = event.target.closest('button[data-full-image]');
-          if (!trigger) return;
-          const photoIndex = getGalleryButtons().indexOf(trigger);
-          window.trackNurseryEvent?.('enlarge_plant_photo', {
-            plant_id: plant.id,
-            photo_index: photoIndex + 1
-          });
-          showViewerImage(photoIndex);
-          imageViewer.showModal();
-        });
-        document.getElementById('image-viewer-next').addEventListener('click', () => {
-          showViewerImage(viewerIndex + 1);
-        });
-        document.getElementById('image-viewer-close').addEventListener('click', () => {
-          imageViewer.close();
-        });
-        imageViewer.addEventListener('click', event => {
-          if (event.target === imageViewer) imageViewer.close();
-        });
         const addDetail = (label, value, target = information) => {
           if (value === undefined || value === null || value === '') return;
           const detail = document.createElement('p');
@@ -630,6 +543,7 @@
             button.type = 'button';
             button.dataset.fullImage = picture;
             button.dataset.imageAlt = image.alt;
+            button.dataset.photoGroup = plant.id;
             button.setAttribute('aria-label', `Enlarge photo ${index + 1} of ${plant.name}`);
             image.addEventListener('error', () => {
               figure.remove();
@@ -667,6 +581,7 @@
           button.type = 'button';
           button.dataset.fullImage = plant.pic;
           button.dataset.imageAlt = image.alt;
+          button.dataset.photoGroup = plant.id;
           button.setAttribute('aria-label', `Enlarge photo of ${plant.name}`);
           image.addEventListener('error', () => figure.remove());
           button.appendChild(image);
@@ -766,6 +681,7 @@
         saveDetailsButton.disabled = true;
       });
   </script>
+  <script src="photo-viewer.js"></script>
   <script src="analytics-consent.js"></script>
 </body>
 </html>

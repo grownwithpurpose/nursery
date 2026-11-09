@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Printable Plant Catalog — The Little Garden Nursery</title>
+  <link rel="stylesheet" href="photo-viewer.css">
   <style>
     :root {
       --forest: #244638;
@@ -277,7 +278,7 @@
         ? value.trim()
         : 'Coming up.';
 
-    const addPhoto = (parent, source, alt, className) => {
+    const addPhoto = (parent, source, alt, className, photoGroup) => {
       if (typeof source !== 'string' || !source.trim() || source.trim().toUpperCase() === 'TODO') {
         return null;
       }
@@ -289,7 +290,15 @@
       image.alt = alt;
       image.loading = 'eager';
       image.addEventListener('error', () => figure.remove());
-      figure.appendChild(image);
+      const button = document.createElement('button');
+      button.className = 'photo-viewer-trigger';
+      button.type = 'button';
+      button.dataset.fullImage = source;
+      button.dataset.imageAlt = alt;
+      button.dataset.photoGroup = photoGroup;
+      button.setAttribute('aria-label', `Enlarge ${alt}`);
+      button.appendChild(image);
+      figure.appendChild(button);
       parent.appendChild(figure);
       return figure;
     };
@@ -366,7 +375,7 @@
       productLayout.className = 'product-layout';
       const photoColumn = document.createElement('div');
       photoColumn.className = 'product-photo-column';
-      addPhoto(photoColumn, plant.pic, plant.name, 'feature-photo');
+      addPhoto(photoColumn, plant.pic, plant.name, 'feature-photo', plant.id);
       productLayout.appendChild(photoColumn);
 
       const productCopy = document.createElement('div');
@@ -436,7 +445,7 @@
         gallery.style.setProperty('--photo-count', Math.min(validPhotos.length, 3));
         photoSection.append(photoHeading, gallery);
         validPhotos.slice(0, 3).forEach((photo, index) =>
-          addPhoto(gallery, photo, `${plant.name} — photo ${index + 1}`)
+          addPhoto(gallery, photo, `${plant.name} — photo ${index + 1}`, null, plant.id)
         );
         page.appendChild(photoSection);
       }
@@ -499,5 +508,6 @@
         catalog.replaceChildren(message);
       });
   </script>
+  <script src="photo-viewer.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>The Little Garden Nursery · San Jose, CA</title>
         <link rel="stylesheet" href="analytics-consent.css">
+        <link rel="stylesheet" href="photo-viewer.css">
         <style>
     :root {
       --forest: #244638;
@@ -240,41 +241,6 @@
       .lg-category-heading { padding: 15px 16px; }
       .lg-category-cards { grid-template-columns: 1fr; }
     }
-    .lg-card-details {
-      padding-top: 16px;
-      border-top: 1px solid #f0ede3;
-    }
-    .lg-card-details[hidden] { display: none; }
-    .lg-card-details p {
-      font: 14px/1.7 Arial, sans-serif;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-    .lg-card-details h4 {
-      margin: 14px 0 6px;
-      color: var(--forest);
-      font: 600 14px/1.4 Arial, sans-serif;
-    }
-    .lg-card-details img {
-      display: block;
-      width: min(100%, 360px);
-      max-height: 320px;
-      margin: 12px auto;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    .lg-card-details .lg-details-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      gap: 10px;
-    }
-    .lg-card-details .lg-details-gallery img {
-      width: 100%;
-      height: 150px;
-      margin: 0;
-      background: #f7f5ee;
-    }
-    .lg-card-details a { color: var(--forest); font-weight: 700; }
     .lg-card-foot {
       display: flex;
       justify-content: space-between;
@@ -484,108 +450,13 @@
                 <article class="lg-card">
                   <div class="lg-cardbody">
                     <h3>${p.name}</h3>
-                    <button class="btn lg-details-toggle" type="button" aria-expanded="false" aria-controls="plant-details-${index}" style="margin:0; padding: 8px 14px; font-size: 10px;">Details</button>
-                    <div class="lg-card-details" id="plant-details-${index}" hidden></div>
+                    <a class="btn" href="plant.html?id=${encodeURIComponent(p.id)}" style="margin:0; padding: 8px 14px; font-size: 10px;">Details</a>
                   </div>
                 </article>
               `).join('')}
             </div>
           </div>
         `).join('');
-        const formatLabel = key => key
-          .replace(/([a-z])([A-Z])/g, '$1 $2')
-          .replace(/^./, first => first.toUpperCase());
-        const appendDetailText = (container, label, value) => {
-          if (value === undefined || value === null ||
-              (typeof value === 'string' &&
-                (!value.trim() || value.trim().toUpperCase() === 'TODO'))) {
-            return;
-          }
-          const heading = document.createElement('h4');
-          heading.textContent = label;
-          const paragraph = document.createElement('p');
-          paragraph.style.whiteSpace = 'pre-line';
-          paragraph.textContent = String(value);
-          container.append(heading, paragraph);
-        };
-        const appendImage = (container, source, alt) => {
-          if (typeof source !== 'string' || !source.trim() || source.trim().toUpperCase() === 'TODO') return;
-          const image = document.createElement('img');
-          image.src = source;
-          image.alt = alt;
-          image.loading = 'lazy';
-          image.addEventListener('error', () => image.remove());
-          container.appendChild(image);
-        };
-        grid.querySelectorAll('.lg-card').forEach(card => {
-          const plantIndex = Number(card.querySelector('.lg-details-toggle').getAttribute('aria-controls').replace('plant-details-', ''));
-          const plant = plants[plantIndex];
-          const details = card.querySelector('.lg-card-details');
-          appendDetailText(details, 'Category', plant.category || 'Coming up.');
-          appendDetailText(details, 'Description', plant.description || 'Coming up.');
-          appendDetailText(
-            details,
-            'Suggested Donation',
-            plant.donation == null ? 'Any amount' : `$${plant.donation}`
-          );
-          appendDetailText(details, 'What you get for your money', plant['What you get for your money'] || 'Coming up.');
-          if (plant.pic) {
-            const heading = document.createElement('h4');
-            heading.textContent = 'Photo';
-            details.appendChild(heading);
-            appendImage(details, plant.pic, plant.name);
-          }
-          if (plant['Symbolism & Meanings']) {
-            appendDetailText(details, 'Symbolism & Meanings', plant['Symbolism & Meanings']);
-          }
-          if (plant.Care) appendDetailText(details, 'Care', plant.Care);
-          const marketReference = plant.marketReference;
-          if (marketReference && (marketReference.text || marketReference.text1)) {
-            appendDetailText(details, 'What you get in other nurseries', marketReference.text || '');
-            const marketLinks = document.createElement('div');
-            [marketReference.url, marketReference.url1].forEach((url, index) => {
-              if (!url || !/^https?:\/\//i.test(url)) return;
-              const link = document.createElement('a');
-              link.href = url;
-              link.target = '_blank';
-              link.rel = 'noopener noreferrer';
-              link.textContent = index === 0 ? 'See example listing' : 'See another listing';
-              marketLinks.appendChild(link);
-              marketLinks.appendChild(document.createElement('br'));
-            });
-            details.appendChild(marketLinks);
-            if (marketReference.text1) {
-              appendDetailText(details, 'Another nursery example', marketReference.text1);
-            }
-          }
-          if (plant.size) appendDetailText(details, 'Size', String(plant.size));
-          if (plant.pickup) appendDetailText(details, 'Pickup', plant.pickup);
-          const pictures = Array.isArray(plant.pictures)
-            ? plant.pictures
-            : Object.values(plant.pictures || {});
-          const validPictures = pictures.filter(picture =>
-            typeof picture === 'string' && picture.trim() && picture.trim().toUpperCase() !== 'TODO'
-          );
-          if (validPictures.length) {
-            const heading = document.createElement('h4');
-            heading.textContent = 'Real photos from my garden';
-            const gallery = document.createElement('div');
-            gallery.className = 'lg-details-gallery';
-            validPictures.forEach((picture, index) =>
-              appendImage(gallery, picture, `${plant.name} — photo ${index + 1}`)
-            );
-            details.append(heading, gallery);
-          }
-        });
-        grid.addEventListener('click', event => {
-          const button = event.target.closest('.lg-details-toggle');
-          if (!button) return;
-          const details = document.getElementById(button.getAttribute('aria-controls'));
-          const expanded = button.getAttribute('aria-expanded') === 'true';
-          button.setAttribute('aria-expanded', String(!expanded));
-          button.textContent = expanded ? 'Details' : 'Hide details';
-          details.hidden = expanded;
-        });
         window.trackNurseryEvent?.('view_plant_catalog');
         if ('IntersectionObserver' in window) {
           const categoryObserver = new IntersectionObserver(entries => {
@@ -607,6 +478,7 @@
         grid.classList.add('catalog-status');
       });
   </script>
+  <script src="photo-viewer.js"></script>
   <script src="analytics-consent.js"></script>
     </body>
 </html>
