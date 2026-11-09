@@ -61,6 +61,12 @@ function setupDonationSheet() {
   sheet.autoResizeColumns(1, DONATION_HEADERS.length);
 }
 
+function doGet() {
+  return HtmlService.createHtmlOutput(
+    "Donation tracker is available. Submit details from the nursery plant page."
+  );
+}
+
 function doPost(event) {
   const values = event && event.parameter ? event.parameter : {};
   if (values.website) {

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Printable Plant Catalog — The Little Garden Nursery</title>
+  <style>
+    :root {
+      --forest: #244638;
+      --clay: #b97859;
+      --ink: #29372f;
+      --muted: #536258;
+      --line: #dce4da;
+      --cream: #f7f5ee;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #e9ece8;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    .toolbar {
+      display: flex;
+      max-width: 8.5in;
+      margin: 0 auto 18px;
+      padding: 14px 18px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-radius: 10px;
+      background: white;
+    }
+    .toolbar p { color: var(--muted); font-size: 13px; }
+    .print-button {
+      flex: 0 0 auto;
+      padding: 11px 18px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--forest);
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .catalog { max-width: 8.5in; margin: 0 auto; }
+    .catalog-page {
+      display: flex;
+      min-height: 11in;
+      margin: 0 0 20px;
+      padding: 0.48in;
+      flex-direction: column;
+      background: white;
+      box-shadow: 0 3px 18px rgba(20, 40, 28, 0.12);
+    }
+    .page-header {
+      display: flex;
+      padding-bottom: 12px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 2px solid var(--forest);
+      color: var(--clay);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .page-header span:last-child { color: var(--muted); text-align: right; }
+    .plant-heading { margin: 18px 0 12px; }
+    .category {
+      margin-bottom: 5px;
+      color: var(--clay);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      color: var(--forest);
+      font: 500 30px/1.12 Georgia, serif;
+    }
+    .description {
+      max-width: 7in;
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .description p { margin: 0 0 5px; }
+    .description ul { margin: 4px 0 5px; padding-left: 18px; }
+    .description li { margin-bottom: 3px; padding-left: 1px; }
+    .product-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .product-photo-column { min-width: 0; }
+    h2 {
+      margin: 0 0 7px;
+      color: var(--forest);
+      font: 500 19px/1.2 Georgia, serif;
+    }
+    .offer { padding: 0; }
+    .offer-copy p { margin: 0; color: var(--muted); font-size: 11px; }
+    .feature-photo {
+      display: block;
+      width: 100%;
+      height: 3.25in;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--cream);
+      object-fit: contain;
+    }
+    .catalog-photo { margin: 0; }
+    .feature-catalog-photo { margin: 0; }
+    .suggested-donation {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfaf6;
+      text-align: right;
+    }
+    .suggested-donation strong {
+      display: block;
+      color: var(--forest);
+      font: 700 11px/1.25 Arial, Helvetica, sans-serif;
+    }
+    .suggested-donation span { color: var(--muted); font-size: 8px; }
+    .details {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+      margin-top: 8px;
+    }
+    .detail-card {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fbfaf6;
+    }
+    .detail-card h2 { font-size: 13px; }
+    .detail-card p { margin: 0; color: var(--muted); font-size: 9px; }
+    .market-reference { margin-top: 7px; }
+    .market-reference a { color: var(--forest); font-weight: 700; }
+    .photo-section {
+      display: flex;
+      margin-top: 12px;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .photo-section h2 { font-size: 18px; }
+    .photo-gallery {
+      display: grid;
+      flex: 1;
+      grid-template-columns: repeat(var(--photo-count, 3), minmax(0, 1fr));
+      grid-auto-rows: minmax(1.8in, 1fr);
+      gap: 7px;
+    }
+    .photo-gallery figure {
+      height: auto;
+      min-height: 1.8in;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--cream);
+    }
+    .photo-gallery img {
+      width: 100%;
+      height: 100%;
+      padding: 3px;
+      object-fit: contain;
+    }
+    .page-footer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      margin-top: auto;
+      padding-top: 9px;
+      align-items: end;
+      gap: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 9px;
+    }
+    .footer-message h2 {
+      margin-bottom: 4px;
+      color: var(--forest);
+      font: 600 15px/1.2 Georgia, serif;
+    }
+    .footer-message { font-size: 10px; line-height: 1.4; }
+    .footer-message p { margin: 0 0 2px; }
+    .footer-website { color: var(--forest); font-size: 10px; font-weight: 700; }
+    .footer-qr { text-align: center; }
+    .footer-qr a { color: var(--forest); font-size: 9px; font-weight: 700; }
+    .footer-qr img { display: block; width: 0.9in; height: 0.9in; margin: 0 auto 3px; }
+    .suggested-donation { max-width: 1.55in; }
+    .suggested-donation strong { font-size: 10px; }
+    .suggested-donation span { font-size: 7px; }
+    .catalog-message {
+      padding: 24px;
+      border-radius: 10px;
+      background: white;
+      color: var(--muted);
+      text-align: center;
+    }
+    @page { size: letter portrait; margin: 0.4in; }
+    @media print {
+      body { padding: 0; background: white; }
+      .toolbar, .catalog-message { display: none !important; }
+      .catalog { max-width: none; margin: 0; }
+      .catalog-page {
+        height: 10.2in;
+        min-height: 10.2in;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        break-after: page;
+        page-break-after: always;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .catalog-page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+      .feature-photo { height: 2.8in; }
+      .photo-section h2 { font-size: 17px; }
+      .photo-gallery { min-height: 0; grid-auto-rows: minmax(1.2in, 1fr); }
+      .photo-gallery figure { min-height: 1.2in; }
+      .page-footer { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; font-size: 9px; }
+      .footer-message { font-size: 10px; line-height: 1.3; }
+      .footer-message h2 { font-size: 14px; }
+      .footer-website { font-size: 10px; }
+      .footer-qr img { width: 0.82in; height: 0.82in; }
+      .suggested-donation { max-width: 1.4in; }
+      img { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+    @media screen and (max-width: 700px) {
+      body { padding: 12px; }
+      .toolbar { align-items: flex-start; }
+      .catalog-page { min-height: 0; padding: 24px; }
+      .product-layout { grid-template-columns: 1fr; }
+      .feature-photo { height: 2.8in; }
+      .page-footer { grid-template-columns: minmax(0, 1fr) auto; }
+      .suggested-donation { grid-column: 1 / -1; justify-self: end; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div>
+      <strong>Printable Plant Catalog</strong>
+      <p>Four selected plants · one letter-size page per plant</p>
+    </div>
+    <button class="print-button" type="button" onclick="window.print()">Print Catalog</button>
+  </div>
+  <main class="catalog" id="catalog" aria-live="polite">
+    <p class="catalog-message">Loading catalog…</p>
+  </main>
+  <script>
+    const PRINTABLE_PLANT_IDS = [
+      'pink-rose-vine',
+      'white-rose-shrub',
+      'Small-Flower-Vase',
+      'Medium-Flower-Vase'
+    ];
+    const catalog = document.getElementById('catalog');
+
+    const displayText = value =>
+      typeof value === 'string' && value.trim() && value.trim().toUpperCase() !== 'TODO'
+        ? value.trim()
+        : 'Coming up.';
+
+    const addPhoto = (parent, source, alt, className) => {
+      if (typeof source !== 'string' || !source.trim() || source.trim().toUpperCase() === 'TODO') {
+        return null;
+      }
+      const figure = document.createElement('figure');
+      figure.className = 'catalog-photo';
+      const image = document.createElement('img');
+      if (className) image.className = className;
+      image.src = source;
+      image.alt = alt;
+      image.loading = 'eager';
+      image.addEventListener('error', () => figure.remove());
+      figure.appendChild(image);
+      parent.appendChild(figure);
+      return figure;
+    };
+
+    const addDetailCard = (parent, headingText, bodyText) => {
+      const section = document.createElement('section');
+      section.className = 'detail-card';
+      const heading = document.createElement('h2');
+      heading.textContent = headingText;
+      const paragraph = document.createElement('p');
+      paragraph.textContent = displayText(bodyText);
+      section.append(heading, paragraph);
+      parent.appendChild(section);
+    };
+
+    const createCatalogPage = plant => {
+      const page = document.createElement('article');
+      page.className = 'catalog-page';
+
+      const header = document.createElement('header');
+      header.className = 'page-header';
+      const brand = document.createElement('span');
+      brand.textContent = 'The Little Garden Nursery';
+      const location = document.createElement('span');
+      location.textContent = 'San Jose · California';
+      header.append(brand, location);
+      page.appendChild(header);
+
+      const titleBlock = document.createElement('div');
+      titleBlock.className = 'plant-heading';
+      const category = document.createElement('p');
+      category.className = 'category';
+      category.textContent = displayText(plant.category);
+      const title = document.createElement('h1');
+      title.textContent = plant.name;
+      const description = document.createElement('div');
+      description.className = 'description';
+      const descriptionLines = String(plant.description || '')
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => line && !/^\.+$/.test(line));
+      let bulletList = null;
+      const appendDescriptionText = (parent, text) => {
+        const labelSeparator = text.indexOf(':');
+        if (labelSeparator > 0) {
+          const label = document.createElement('strong');
+          label.textContent = text.slice(0, labelSeparator + 1);
+          parent.append(label, document.createTextNode(text.slice(labelSeparator + 1)));
+        } else {
+          parent.textContent = text;
+        }
+      };
+      descriptionLines.forEach(line => {
+        const bulletMatch = line.match(/^[•*-]\s*(.+)$/);
+        if (bulletMatch) {
+          if (!bulletList) {
+            bulletList = document.createElement('ul');
+            description.appendChild(bulletList);
+          }
+          const item = document.createElement('li');
+          appendDescriptionText(item, bulletMatch[1].trim());
+          bulletList.appendChild(item);
+          return;
+        }
+        bulletList = null;
+        const paragraph = document.createElement('p');
+        paragraph.textContent = line;
+        description.appendChild(paragraph);
+      });
+      titleBlock.append(category, title, description);
+      page.appendChild(titleBlock);
+
+      const productLayout = document.createElement('div');
+      productLayout.className = 'product-layout';
+      const photoColumn = document.createElement('div');
+      photoColumn.className = 'product-photo-column';
+      addPhoto(photoColumn, plant.pic, plant.name, 'feature-photo');
+      productLayout.appendChild(photoColumn);
+
+      const productCopy = document.createElement('div');
+      productCopy.className = 'product-copy';
+      const offer = document.createElement('section');
+      offer.className = 'offer';
+      const offerCopy = document.createElement('div');
+      offerCopy.className = 'offer-copy';
+      const offerHeading = document.createElement('h2');
+      offerHeading.textContent = 'What you get for your money';
+      const offerDescription = document.createElement('p');
+      offerDescription.textContent = displayText(plant['What you get for your money']);
+      offerCopy.append(offerHeading, offerDescription);
+      const suggestedDonation = document.createElement('div');
+      suggestedDonation.className = 'suggested-donation';
+      const amount = document.createElement('strong');
+      amount.textContent = plant.donation == null
+        ? 'Suggested Donation: Any Amount'
+        : `Suggested Donation: $${plant.donation}`;
+      const donationNote = document.createElement('span');
+      donationNote.textContent = 'Donations go directly to Hunger at Home.';
+      suggestedDonation.append(amount, donationNote);
+      offer.appendChild(offerCopy);
+      productCopy.appendChild(offer);
+
+      const details = document.createElement('div');
+      details.className = 'details';
+      const symbolism = plant['Symbolism & Meanings'];
+      if (symbolism) addDetailCard(details, 'Symbolism & Meanings', symbolism);
+      if (plant.Care) addDetailCard(details, 'Care', plant.Care);
+      if (details.childElementCount) productCopy.appendChild(details);
+
+      if (plant.marketReference?.text && plant.marketReference.text.trim().toUpperCase() !== 'TODO') {
+        const market = document.createElement('section');
+        market.className = 'detail-card market-reference';
+        const marketHeading = document.createElement('h2');
+        marketHeading.textContent = 'What you get in other nurseries';
+        const marketText = document.createElement('p');
+        marketText.textContent = plant.marketReference.text;
+        market.append(marketHeading, marketText);
+        if (plant.marketReference.url && /^https?:\/\//i.test(plant.marketReference.url)) {
+          const link = document.createElement('a');
+          link.href = plant.marketReference.url;
+          link.textContent = 'View example listing';
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          market.appendChild(link);
+        }
+        productCopy.appendChild(market);
+      }
+      productLayout.appendChild(productCopy);
+      page.appendChild(productLayout);
+
+      const photos = Array.isArray(plant.pictures)
+        ? plant.pictures
+        : Object.values(plant.pictures || {});
+      const validPhotos = photos.filter(photo =>
+        typeof photo === 'string' && photo.trim() && photo.trim().toUpperCase() !== 'TODO'
+      );
+      if (validPhotos.length) {
+        const photoSection = document.createElement('section');
+        photoSection.className = 'photo-section';
+        const photoHeading = document.createElement('h2');
+        photoHeading.textContent = 'Real photos from my garden';
+        const gallery = document.createElement('div');
+        gallery.className = 'photo-gallery';
+        gallery.style.setProperty('--photo-count', Math.min(validPhotos.length, 3));
+        photoSection.append(photoHeading, gallery);
+        validPhotos.slice(0, 3).forEach((photo, index) =>
+          addPhoto(gallery, photo, `${plant.name} — photo ${index + 1}`)
+        );
+        page.appendChild(photoSection);
+      }
+
+      const footer = document.createElement('footer');
+      footer.className = 'page-footer';
+      const footerMessage = document.createElement('div');
+      footerMessage.className = 'footer-message';
+      const footerHeading = document.createElement('h2');
+      footerHeading.textContent = 'Growing plants. Growing possibilities.';
+      const footerDescription = document.createElement('p');
+      footerDescription.textContent = 'Thoughtfully grown plants in San Jose. 100% of plant sale proceeds go directly to feed neighbors in need through Hunger at Home, a local 501(c)(3) nonprofit working to build food security across Silicon Valley.';
+      const website = document.createElement('a');
+      website.className = 'footer-website';
+      website.href = 'https://www.grownwithpurpose.com/';
+      website.textContent = 'grownwithpurpose.com';
+      website.target = '_blank';
+      website.rel = 'noopener noreferrer';
+      const contact = document.createElement('p');
+      contact.textContent = 'Contact: 615 938 0268';
+      footerMessage.append(footerHeading, footerDescription, website, contact);
+
+      const qr = document.createElement('div');
+      qr.className = 'footer-qr';
+      const qrLink = document.createElement('a');
+      qrLink.href = 'https://www.grownwithpurpose.com/';
+      qrLink.target = '_blank';
+      qrLink.rel = 'noopener noreferrer';
+      const qrImage = document.createElement('img');
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent('https://www.grownwithpurpose.com/')}`;
+      qrImage.alt = 'QR code for grownwithpurpose.com';
+      qrLink.appendChild(qrImage);
+      const qrLabel = document.createElement('span');
+      qrLabel.textContent = 'Visit our website';
+      qr.append(qrLink, qrLabel);
+
+      footer.append(footerMessage, qr, suggestedDonation);
+      page.appendChild(footer);
+      return page;
+    };
+
+    fetch('plants.json', { cache: 'no-cache' })
+      .then(response => {
+        if (!response.ok) throw new Error(`Catalog data request failed (${response.status}).`);
+        return response.json();
+      })
+      .then(plants => {
+        const plantsById = new Map(plants.map(plant => [plant.id, plant]));
+        const selectedPlants = PRINTABLE_PLANT_IDS.map(id => plantsById.get(id)).filter(Boolean);
+        if (selectedPlants.length !== PRINTABLE_PLANT_IDS.length) {
+          throw new Error('One or more selected plants are missing from plants.json.');
+        }
+        catalog.replaceChildren(...selectedPlants.map(createCatalogPage));
+      })
+      .catch(error => {
+        console.error('Unable to build the printable catalog:', error);
+        const message = document.createElement('p');
+        message.className = 'catalog-message';
+        message.textContent = 'The catalog could not be loaded. Please refresh the page or check plants.json.';
+        catalog.replaceChildren(message);
+      });
+  </script>
+</body>
+</html>

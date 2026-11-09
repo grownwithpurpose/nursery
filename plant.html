@@ -146,6 +146,9 @@
     }
     h1 { font-family: Georgia, serif; font-size: 30px; line-height: 1.2; color: var(--forest); margin-bottom: 12px; }
     .desc { font-size: 15px; color: #536258; margin-bottom: 20px; }
+    .desc p { margin: 0 0 8px; }
+    .desc ul { margin: 4px 0 8px; padding-left: 22px; }
+    .desc li { margin-bottom: 5px; padding-left: 2px; }
     .plant-detail {
       margin: 0 0 16px;
       padding: 12px 14px;
@@ -172,6 +175,32 @@
       margin-bottom: 14px;
       color: #536258;
       font-size: 14px;
+    }
+    .plant-feature-photo {
+      max-width: 360px;
+      margin: 14px auto;
+      overflow: hidden;
+      border: 1px solid #e7e4d8;
+      border-radius: 10px;
+      background: #f7f5ee;
+    }
+    .plant-feature-photo button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+    .plant-feature-photo button:focus-visible {
+      outline: 3px solid var(--forest);
+      outline-offset: -3px;
+    }
+    .plant-feature-photo img {
+      display: block;
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
     }
     .plant-offer .impact-box {
       margin: 0 0 14px;
@@ -259,6 +288,14 @@
     .donation-result h3 { color: var(--forest); margin-bottom: 8px; }
     .donation-result p { margin-bottom: 16px; }
     .donation-result a { color: var(--forest); font-weight: 600; }
+    .kindful-donation-frame {
+      display: block;
+      width: 100%;
+      min-height: 760px;
+      border: 0;
+      border-radius: 8px;
+      background: #fff;
+    }
     .honeypot { position: absolute; left: -10000px; }
     .instructions {
       margin-top: 16px;
@@ -335,8 +372,15 @@
         tabindex="-1"></iframe>
       <div class="donation-result" id="donation-result" hidden>
         <h3>Your details are saved</h3>
-        <p>Your pickup details were saved to the nursery’s private sheet and were not sent to Hunger at Home. Opening their secure donation form. Donations are made directly to Hunger at Home and are not recorded by this form.</p>
-        <p>If you are not redirected, <a id="continue-to-donation" href="https://hungerathome-bloom.kindful.com/embeds/d57150e7-d3ee-4a12-a30c-2aa8be68bc72?p=https%3A%2F%2Fhungerathome.org&amp;embedded=true&amp;full_form=true">continue to Hunger at Home’s donation form</a>.</p>
+        <p>Your pickup details were saved to the nursery’s private sheet and were not sent to Hunger at Home. You can make a donation directly to Hunger at Home using the form below. The nursery does not process or record donations.</p>
+        <iframe
+          class="kindful-donation-frame"
+          id="kindful-donation-frame"
+          title="Hunger at Home donation form"
+          loading="lazy"
+          allow="payment"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <p>If the donation form does not load or complete payment here, <a id="continue-to-donation" href="https://hungerathome-bloom.kindful.com/embeds/d57150e7-d3ee-4a12-a30c-2aa8be68bc72?p=https%3A%2F%2Fhungerathome.org&amp;embedded=true&amp;full_form=true" target="_blank" rel="noopener noreferrer">open Hunger at Home’s donation form in a new tab</a>.</p>
       </div>
     </section>
   </div>
@@ -418,7 +462,7 @@
         donationForm.hidden = true;
         document.getElementById('donation-instructions').hidden = true;
         donationResult.hidden = false;
-        window.location.assign(donationUrl);
+        document.getElementById('kindful-donation-frame').src = donationUrl;
         return;
       }
 
@@ -431,7 +475,7 @@
     const params = new URLSearchParams(window.location.search);
     const plantId = params.get('id') || 'black-mission-fig';
 
-    fetch('plants.json')
+    fetch('plants.json', { cache: 'no-cache' })
       .then(res => res.json())
       .then(plants => {
         const plant = plants.find(p => p.id === plantId) || plants[0];
@@ -495,9 +539,40 @@
         name.textContent = plant.name;
         information.appendChild(name);
 
-        const description = document.createElement('p');
+        const description = document.createElement('div');
         description.className = 'desc';
-        description.textContent = plant.description || '';
+        const descriptionLines = String(plant.description || '')
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(line => line && !/^\.+$/.test(line));
+        let bulletList = null;
+        const appendDescriptionText = (parent, text) => {
+          const labelSeparator = text.indexOf(':');
+          if (labelSeparator > 0) {
+            const label = document.createElement('strong');
+            label.textContent = text.slice(0, labelSeparator + 1);
+            parent.append(label, document.createTextNode(text.slice(labelSeparator + 1)));
+          } else {
+            parent.textContent = text;
+          }
+        };
+        descriptionLines.forEach(line => {
+          const bulletMatch = line.match(/^[•*-]\s*(.+)$/);
+          if (bulletMatch) {
+            if (!bulletList) {
+              bulletList = document.createElement('ul');
+              description.appendChild(bulletList);
+            }
+            const item = document.createElement('li');
+            appendDescriptionText(item, bulletMatch[1].trim());
+            bulletList.appendChild(item);
+            return;
+          }
+          bulletList = null;
+          const paragraph = document.createElement('p');
+          paragraph.textContent = line;
+          description.appendChild(paragraph);
+        });
         information.appendChild(description);
 
         addDetail('Symbolism & Meanings', plant['Symbolism & Meanings']);
@@ -559,10 +634,7 @@
             image.addEventListener('error', () => {
               figure.remove();
               if (!gallery.querySelector('figure')) {
-                const message = document.createElement('p');
-                message.className = 'plant-offer-description';
-                message.textContent = 'Coming up.';
-                gallery.replaceWith(message);
+                section.remove();
               }
             });
             button.appendChild(image);
@@ -581,12 +653,34 @@
         } else {
           addComingUp(whatYouGet);
         }
+        if (typeof plant.pic === 'string' &&
+            plant.pic.trim() &&
+            plant.pic.trim().toUpperCase() !== 'TODO') {
+          const figure = document.createElement('figure');
+          figure.className = 'plant-feature-photo';
+          const button = document.createElement('button');
+          const image = document.createElement('img');
+          image.src = plant.pic;
+          image.alt = plant.name;
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          button.type = 'button';
+          button.dataset.fullImage = plant.pic;
+          button.dataset.imageAlt = image.alt;
+          button.setAttribute('aria-label', `Enlarge photo of ${plant.name}`);
+          image.addEventListener('error', () => figure.remove());
+          button.appendChild(image);
+          figure.appendChild(button);
+          whatYouGet.appendChild(figure);
+        }
         if (plant.size) addDetail('Size', plant.size, whatYouGet);
         const impact = document.createElement('div');
         impact.className = 'impact-box';
         const amount = document.createElement('strong');
         const flexibleDonation = plant.donation == null;
-        amount.textContent = flexibleDonation ? 'Choose any amount' : `$${plant.donation} Donation`;
+        amount.textContent = flexibleDonation
+          ? 'Suggested Donation: Choose any amount'
+          : `Suggested Donation: $${plant.donation}`;
         const note = document.createElement('span');
         note.textContent = flexibleDonation
           ? 'Choose your amount in Hunger at Home’s donation form. Payment goes directly to Hunger at Home, not the nursery.'
@@ -594,47 +688,56 @@
         impact.append(amount, note);
         whatYouGet.appendChild(impact);
 
-        const buyingToday = createSection('What you are buying today');
-        const buyingTodayDescription = plant['What you are buying today'];
-        const buyingTodayPictures = plant.buyingTodayPictures;
-        if (buyingTodayDescription) {
-          const description = document.createElement('p');
-          description.className = 'plant-offer-description';
-          description.textContent = buyingTodayDescription;
-          buyingToday.appendChild(description);
-        }
-        if (buyingTodayPictures) {
-          renderPhotoGallery(buyingToday, 'Photos of today’s item', buyingTodayPictures);
-        } else if (!buyingTodayDescription) {
-          addComingUp(buyingToday);
+        const gardenPictures = Array.isArray(plant.pictures)
+          ? plant.pictures
+          : Object.values(plant.pictures || {});
+        const validGardenPictures = gardenPictures.filter(picture =>
+          typeof picture === 'string' && picture.trim() && picture.trim().toUpperCase() !== 'TODO'
+        );
+        if (validGardenPictures.length) {
+          const realGarden = createSection('Real photos from my garden');
+          renderPhotoGallery(
+            realGarden,
+            null,
+            validGardenPictures,
+            'This is how it will look.',
+            'Real photos from my garden'
+          );
         }
 
-        const realGarden = createSection('Real photos from my garden');
-        renderPhotoGallery(realGarden, null, plant.pictures, 'This is how it will look.', 'Real photos from my garden');
-
-        const otherNurseries = createSection('What you get in other nurseries');
-        if (plant.marketReference?.text && plant.marketReference?.url &&
-            plant.marketReference.text.trim().toUpperCase() !== 'TODO' &&
-            plant.marketReference.url.trim().toUpperCase() !== 'TODO') {
-          const marketUrl = new URL(plant.marketReference.url, window.location.href);
-          if (marketUrl.protocol === 'https:' || marketUrl.protocol === 'http:') {
-            const reference = document.createElement('aside');
-            reference.className = 'market-reference';
-            const text = document.createElement('p');
-            text.textContent = plant.marketReference.text;
+        const marketText = plant.marketReference?.text;
+        if (typeof marketText === 'string' &&
+            marketText.trim() &&
+            marketText.trim().toUpperCase() !== 'TODO') {
+          const otherNurseries = createSection('What you get in other nurseries');
+          const marketUrlValue = plant.marketReference.url;
+          let marketUrl = null;
+          if (typeof marketUrlValue === 'string' && marketUrlValue.trim()) {
+            try {
+              const parsedUrl = new URL(marketUrlValue, window.location.href);
+              if (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:') {
+                marketUrl = parsedUrl;
+              } else {
+                console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
+              }
+            } catch {
+              console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
+            }
+          }
+          const reference = document.createElement('aside');
+          reference.className = 'market-reference';
+          const text = document.createElement('p');
+          text.textContent = marketText;
+          reference.appendChild(text);
+          if (marketUrl) {
             const link = document.createElement('a');
             link.href = marketUrl.href;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.textContent = 'See example listing';
-            reference.append(text, link);
-            otherNurseries.appendChild(reference);
-          } else {
-            console.warn(`Ignoring unsupported market reference URL for plant ${plant.id}.`);
-            addComingUp(otherNurseries);
+            reference.appendChild(link);
           }
-        } else {
-          addComingUp(otherNurseries);
+          otherNurseries.appendChild(reference);
         }
 
         if (plant.pickup) {

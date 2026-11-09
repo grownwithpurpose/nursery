@@ -1,40 +1,34 @@
 [
   {
-    "category": "Trees",
+    "category": "Non Fruiting Trees",
     "id": "crepe-myrtle",
-    "name": "4 Feet 3 Year old Crepe Myrtle Tree",
-    "pic": "pictures/Tuscarora-Crepe-Myrtle-1.jpg",
-    "description": "Vibrant dark coral-pink summer flowers with attractive mottled peeling bark in winter.",
-    "What you get for your money": "TODO",
+    "name": "4 Feet 3 Year, 5-10 gallon old Crepe Myrtle Tree",
+    "pic": "pictures/crepe-mrytle-real-pot.jpeg",
+    "description": "Vibrant summer flowers with attractive mottled peeling bark in winter.",
+    "What you get for your money": "4 Feet 3 Year, 5-10 gallon old Crepe Myrtle Tree. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season.",
     "donation": 50,
     "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
+      "text": "A similar tree in a 5 gallon pot is listed for around $90. Prices and availability may change.",
+      "url": "https://plantsexpress.com/products/tuscarora-crape-myrtle-tree?variant=48666953253119&_pos=1&_sid=0947deda6&_ss=r"
     },
-    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "Care": "Full sun, low to moderate water once rooted.",
     "pictures": {
-      "1": "TODO"
     }
   },
   {
-    "category": "Trees",
+    "category": "Non Fruiting Trees",
     "id": "avacado",
-    "name": "Avacado",
-    "pic": "pictures/Avacado-Tree-1.jpg",
-    "description": "6 Feet Avacado tree - 2 year old",
-    "What you get for your money": "TODO",
+    "name": "Non Fruiting Avocado",
+    "pic": "pictures/real-avacado-plant.jpeg",
+    "description": "2 year old Avacado tree, already 6 Feet tall even when i pruned it last year. \n    • Lush Aesthetics: Avocado trees grow dense, dark-green glossy foliage and can reach a handsome, upright shape that provides great backyard shade.\n• Privacy: They will not shed leaves even in winter, so you get year around privacy.\n• Low Mess and Maintenance (No Dropped Fruit): You don't have to worry about messy, rotting fruit dropping onto lawns, walkways, or attracting rodents, raccoons, or wasps.\n. ",
+    "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season.",
     "donation": 50,
-    "marketReference": {
-      "text": "TODO",
-      "url": "TODO"
-    },
-    "Care": "Full sun, low to moderate water once rooted, adaptable to clay soils",
+    "Care": "Full sun, low to moderate water once rooted",
     "pictures": {
-      "1": "pictures/Avacado-Tree-1.jpg"
     }
   },
   {
-    "category": "Plants and Shrubs",
+    "category": "Roses",
     "id": "yellow-rose",
     "name": "Happy Go Lucky - Yellow Rose",
     "pic": "pictures/HappyGoLucky.jpg",
@@ -53,13 +47,13 @@
     }
   },
   {
-    "category": "Plants and Shrubs",
+    "category": "Roses",
     "id": "pink-rose-vine",
     "name": "Pink Ceceille Brunner Rose Vine",
-    "pic": "pictures/Ceceille Brunner Rose Vine-1.jpg",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes. Small, delicately pointed buds open to fragrant, light pink, double blooms in large sprays. An ever popular climber for a trellis or arbor in cottage or country gardens. Deciduous. Heaviest frangrant blooms in spring; scattered rebloom to fall",
     "Symbolism & Meanings": "Represents purity, innocence, remembrance, and sympathy.",
     "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season. That is why it does not have flowers today.",
+    "pic": "pictures/pink-ceceille-real-pot.jpeg",
     "donation": 40,
     "marketReference": {
       "text": "A similar climbing rose in a 6-inch pot is listed for around $80. Prices and availability may change.",
@@ -72,28 +66,26 @@
     }
   },
   {
-    "category": "Plants and Shrubs",
+    "category": "Roses",
     "id": "white-rose-shrub",
     "name": "White Iceberg Rose Shrub",
-    "pic": "pictures/White Iceberg Rose Shrub-1.jpg",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
     "Symbolism & Meanings": "Represents purity, innocence, remembrance, and sympathy.",
     "What you get for your money": "A healthy potted 25 gallon plant. The pot is about 35 inches across. It has been thoughtfully trimmed and mulched to help develop a healthy root system for the upcoming season. That is why it does not have flowers today.",
+    "pic": "pictures/white-iceberg-real.jpeg",
     "donation": 50,
     "marketReference": {
       "text": "A similar rose in a 5 gallon pot is listed for around $50. Prices and availability may change.",
       "url": "https://plantsexpress.com/products/white-iceberg-shrub-rose?variant=43513064161535"
     },
-    "Care": "Full sun, deep watering 1-2 times weekly, rich composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. ",
+    "Care": "Full sun, deep watering 1-2 times weekly,  composted soil. Keep on clipping flowers to produce more and more blooms during blooming season. ",
     "pictures": {
-      "1": "pictures/Ceceille Brunner Rose Vine-1.jpg",
-      "2": "pictures/Ceceille Brunner Rose Vine-2.jpg"
-    }
+      "1": "pictures/ice-berg-rose-from-garden-view.jpg"    }
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
     "id": "Small-Flower-Vase",
-    "name": "Assorted Flowers of the Day",
+    "name": "Small Assorted Flowers of the Day",
     "pic": "pictures/Small-FlowerVase-1.jpg",
     "description": "A small size of seasonal arrangement of assorted flowers picked from the garden.",
     "Symbolism & Meanings": "Often associated with joy, appreciation, and celebration; meanings vary with the flowers included.",
@@ -132,7 +124,7 @@
     "Care": "Just make sure it has adequate water and is kept in a cool, filtered light"
   },
   {
-    "category": "Nursery",
+    "category": "Wildcard",
     "id": "nursery-goods-services",
     "name": "Any Amount — Nursery Goods & Services",
     "description": "Choose any amount as a contribution associated with nursery goods or services. Payment is made directly to Hunger at Home; the nursery does not receive or process payment.",
