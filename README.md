@@ -58,6 +58,10 @@ Page views require a Google tag configured in GTM. Custom events require corresp
 
 Add image filenames to a plant's `pictures` property in `plants.json`; it may be an array or an object whose values are image paths. The plant detail page displays every listed image in a responsive gallery. Upload or copy the image files into the `pictures/` directory, then use paths relative to `plant.html` such as `pictures/yellow-rose-1.jpg`. Publish both the JSON and image files. Missing or unreadable images are omitted from the gallery.
 
+### Ordering the plant catalog
+
+Set `categoryOrder` and `plantOrder` on each record in `plants.json`. Categories are displayed from lowest to highest `categoryOrder`; plants within each category are displayed from lowest to highest `plantOrder`. Reuse the same `categoryOrder` value for records in the same category, and use distinct `plantOrder` values within that category. If an order value is omitted, that item sorts after records with an explicit order, preserving the original JSON order for ties.
+
 ### Adding market comparisons
 
 For a plant with a relevant market example, add a `marketReference` object in `plants.json` with `text` and `url` fields. The plant page displays it as “Similar options elsewhere” with a link to the example listing; plants without this data omit the comparison.

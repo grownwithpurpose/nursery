@@ -427,7 +427,7 @@
             THE LITTLE GARDEN NURSERY  ·  SAN JOSE, CALIFORNIA  ·  GROWN WITH PURPOSE
 </div>
         <script>
-    fetch('plants.json')
+    fetch('plants.json', { cache: 'no-cache' })
       .then(res => {
         if (!res.ok) {
           throw new Error(`Plant catalog request failed (${res.status}).`);
@@ -439,23 +439,40 @@
           throw new Error('Plant catalog is empty or has an invalid format.');
         }
         const grid = document.getElementById('catalog-grid');
-        const categoryOrder = [
-          'Plants and Shrubs',
-          'Trees',
-          'Flower Vase — Assorted Flowers of the Day',
-          'Nursery Goods & Services',
-          'Consultation'
-        ];
-        const categories = [...new Set([
-          ...categoryOrder,
-          ...plants.map(plant => plant.category).filter(Boolean)
-        ])];
-        const groupedPlants = categories
-          .map(category => ({
-            category,
-            plants: plants.filter(plant => plant.category === category)
-          }))
-          .filter(group => group.plants.length);
+        const groupsByCategory = new Map();
+        plants.forEach((plant, index) => {
+          if (!plant.category) return;
+          let group = groupsByCategory.get(plant.category);
+          if (!group) {
+            group = {
+              category: plant.category,
+              categoryOrder: Number.isFinite(plant.categoryOrder)
+                ? plant.categoryOrder
+                : Number.MAX_SAFE_INTEGER,
+              firstIndex: index,
+              plants: []
+            };
+            groupsByCategory.set(plant.category, group);
+          }
+          if (Number.isFinite(plant.categoryOrder)) {
+            group.categoryOrder = Math.min(group.categoryOrder, plant.categoryOrder);
+          }
+          group.plants.push({ plant, index });
+        });
+        const groupedPlants = [...groupsByCategory.values()]
+          .sort((a, b) => a.categoryOrder - b.categoryOrder || a.firstIndex - b.firstIndex)
+          .map(group => ({
+            ...group,
+            plants: group.plants.sort((a, b) => {
+              const aOrder = Number.isFinite(a.plant.plantOrder)
+                ? a.plant.plantOrder
+                : Number.MAX_SAFE_INTEGER;
+              const bOrder = Number.isFinite(b.plant.plantOrder)
+                ? b.plant.plantOrder
+                : Number.MAX_SAFE_INTEGER;
+              return aOrder - bOrder || a.index - b.index;
+            })
+          }));
         grid.innerHTML = groupedPlants.map(group => `
           <div class="lg-catalog-group" aria-labelledby="category-${encodeURIComponent(group.category)}">
             <div class="lg-category-heading">
@@ -463,12 +480,12 @@
               <span class="lg-category-count">${group.plants.length} ${group.plants.length === 1 ? 'item' : 'items'}</span>
             </div>
             <div class="lg-category-cards">
-              ${group.plants.map(p => `
+              ${group.plants.map(({ plant: p, index }) => `
                 <article class="lg-card">
                   <div class="lg-cardbody">
                     <h3>${p.name}</h3>
-                    <button class="btn lg-details-toggle" type="button" aria-expanded="false" aria-controls="plant-details-${plants.indexOf(p)}" style="margin:0; padding: 8px 14px; font-size: 10px;">Details</button>
-                    <div class="lg-card-details" id="plant-details-${plants.indexOf(p)}" hidden></div>
+                    <button class="btn lg-details-toggle" type="button" aria-expanded="false" aria-controls="plant-details-${index}" style="margin:0; padding: 8px 14px; font-size: 10px;">Details</button>
+                    <div class="lg-card-details" id="plant-details-${index}" hidden></div>
                   </div>
                 </article>
               `).join('')}

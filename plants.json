@@ -1,6 +1,8 @@
 [
   {
     "category": "Non Fruiting Trees",
+    "categoryOrder": 3,
+    "plantOrder": 1,
     "id": "crepe-myrtle",
     "name": "4 Feet 3 Year, 5-10 gallon old Crepe Myrtle Tree",
     "pic": "pictures/crepe-mrytle-real-pot.jpeg",
@@ -17,6 +19,8 @@
   },
   {
     "category": "Non Fruiting Trees",
+    "categoryOrder": 3,
+    "plantOrder": 2,
     "id": "avacado",
     "name": "Non Fruiting Avocado",
     "pic": "pictures/real-avacado-plant.jpeg",
@@ -29,6 +33,8 @@
   },
   {
     "category": "Roses",
+    "categoryOrder": 1,
+    "plantOrder": 1,
     "id": "yellow-rose",
     "name": "Happy Go Lucky - Yellow Rose",
     "pic": "pictures/HappyGoLucky.jpg",
@@ -48,6 +54,8 @@
   },
   {
     "category": "Roses",
+    "categoryOrder": 1,
+    "plantOrder": 2,
     "id": "pink-rose-vine",
     "name": "Pink Ceceille Brunner Rose Vine",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes. Small, delicately pointed buds open to fragrant, light pink, double blooms in large sprays. An ever popular climber for a trellis or arbor in cottage or country gardens. Deciduous. Heaviest frangrant blooms in spring; scattered rebloom to fall",
@@ -67,6 +75,8 @@
   },
   {
     "category": "Roses",
+    "categoryOrder": 1,
+    "plantOrder": 3,
     "id": "white-rose-shrub",
     "name": "White Iceberg Rose Shrub",
     "description": "Classic fragrant, soft blush-pink blooms on sturdy climbing canes.",
@@ -84,6 +94,8 @@
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
+    "categoryOrder": 2,
+    "plantOrder": 1,
     "id": "Small-Flower-Vase",
     "name": "Small Assorted Flowers of the Day",
     "pic": "pictures/Small-FlowerVase-1.jpg",
@@ -104,6 +116,8 @@
   },
   {
     "category": "Assorted Flowers of the Day - Arrangement in a vase",
+    "categoryOrder": 2,
+    "plantOrder": 2,
     "id": "Medium-Flower-Vase",
     "name": "Medium Assorted Flowers of the Day",
     "pic": "pictures/Medium-FlowerVase-1.png",
@@ -125,6 +139,8 @@
   },
   {
     "category": "Wildcard",
+    "categoryOrder": 5,
+    "plantOrder": 1,
     "id": "nursery-goods-services",
     "name": "Any Amount — Nursery Goods & Services",
     "description": "Choose any amount as a contribution associated with nursery goods or services. Payment is made directly to Hunger at Home; the nursery does not receive or process payment.",
@@ -133,6 +149,8 @@
   },
   {
     "category": "Consultation",
+    "categoryOrder": 4,
+    "plantOrder": 1,
     "id": "plant-consultation-60-min",
     "name": "1 hour plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
@@ -140,6 +158,8 @@
   },
   {
     "category": "Consultation",
+    "categoryOrder": 4,
+    "plantOrder": 2,
     "id": "plant-consultation-30-min",
     "name": "30 min plant consultation",
     "description": "Have questions about your plants? I can help. I can visit you, see what is going on and give you a consultation. Donate if you find the advice helpful.",
